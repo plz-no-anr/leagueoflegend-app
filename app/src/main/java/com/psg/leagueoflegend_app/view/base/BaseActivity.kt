@@ -1,4 +1,4 @@
-package com.psg.leagueoflegend_app.presentation.base
+package com.psg.leagueoflegend_app.view.base
 
 import android.os.Bundle
 import android.view.Menu
@@ -16,7 +16,7 @@ import com.psg.leagueoflegend_app.R
 abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val res: Int): AppCompatActivity() {
     lateinit var binding: T
     abstract val TAG: String
-    abstract val  viewModel: V
+    abstract val viewModel: V
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +24,12 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
         binding = DataBindingUtil.setContentView(this, res)
     }
 
+    open fun setDisplay(){
+
+    }
+
     open fun setToolbar(toolbar: Toolbar){
-        toolbar.title = R.string.app_name.toString()
+        toolbar.title = "리그오브레전드 전적 검색"
         setSupportActionBar(toolbar)
     }
 
@@ -37,11 +41,9 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.search -> {
-                Toast.makeText(applicationContext, "Search Click", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.option -> {
-                Toast.makeText(applicationContext, "Option Click", Toast.LENGTH_SHORT).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)

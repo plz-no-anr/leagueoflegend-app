@@ -22,7 +22,7 @@ data class LeagueEntryDTO(
     }
 
 
-    class MiniSeriesDTO(
+    data class MiniSeriesDTO(
         val losses: Int? = null,
         val target: Int? = null,
         val wins: Int? = null,

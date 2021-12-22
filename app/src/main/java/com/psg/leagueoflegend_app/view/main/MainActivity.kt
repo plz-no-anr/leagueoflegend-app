@@ -1,24 +1,40 @@
-package com.psg.leagueoflegend_app.presentation.main
+package com.psg.leagueoflegend_app.view.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.databinding.ActivityMainBinding
-import com.psg.leagueoflegend_app.presentation.base.BaseActivity
+import com.psg.leagueoflegend_app.view.base.BaseActivity
+import com.psg.leagueoflegend_app.view.search.SearchActivity
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.activity_main) {
     override val TAG: String = MainActivity::class.java.simpleName
     override val viewModel: MainViewModel by inject()
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        setToolbar(binding.toolbar)
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.search -> {
+                val intent = Intent(this,SearchActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.option -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
 
 

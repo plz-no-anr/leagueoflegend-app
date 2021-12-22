@@ -1,4 +1,4 @@
-package com.psg.leagueoflegend_app.presentation.splash
+package com.psg.leagueoflegend_app.view.splash
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.psg.leagueoflegend_app.R
-import com.psg.leagueoflegend_app.presentation.main.MainActivity
+import com.psg.leagueoflegend_app.view.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -12,18 +12,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".presentation.splash.SplashActivity">
+        android:theme="@style/Theme.LeagueOfLegendApp">
+        <activity android:name=".view.search.SearchActivity"></activity>
+        <activity android:name=".view.splash.SplashActivity"></activity>
+        <activity
+            android:name=".view.base.BaseActivity"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".view.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".presentation.base.BaseActivity"
-            tools:ignore="Instantiatable" />
-        <activity android:name=".presentation.main.MainActivity">
-
         </activity>
     </application>
 

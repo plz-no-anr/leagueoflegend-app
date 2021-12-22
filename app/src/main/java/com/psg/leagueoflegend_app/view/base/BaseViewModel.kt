@@ -1,4 +1,4 @@
-package com.psg.leagueoflegend_app.presentation.base
+package com.psg.leagueoflegend_app.view.base
 
 import androidx.lifecycle.ViewModel
 
