@@ -35,7 +35,7 @@ val appModule = module {
 
 val viewModelModule = module {
     viewModel { MainViewModel() }
-    viewModel { SearchViewModel() }
+    viewModel { SearchViewModel(get()) }
 }
 
 val repositoryModule = module {

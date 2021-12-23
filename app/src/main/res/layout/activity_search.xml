@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.psg.leagueoflegend_app.view.search.SearchViewModel" />
+    </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,7 +78,8 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_allRemove"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

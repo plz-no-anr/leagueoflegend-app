@@ -16,7 +16,7 @@ interface LeagueOfLegendAPI {
 
     @GET("league/v4/entries/by-summoner/{encryptedSummonerId}")
     fun getLeague(
-        @Path("encryptedSummonerId") encryptedSummonerId: String,
+        @Path("encryptedSummonerId") encryptedSummonerId: String?,
         @Query("api_key") api_key: String
     ): Call<Set<LeagueEntryDTO>>
 }
