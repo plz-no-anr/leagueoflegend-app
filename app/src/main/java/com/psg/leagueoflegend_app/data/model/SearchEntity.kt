@@ -5,8 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class SearchEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int, // 프라이머리키
+    @PrimaryKey
     val name: String,
     val date: String
 )

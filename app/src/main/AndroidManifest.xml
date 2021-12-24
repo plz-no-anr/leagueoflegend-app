@@ -4,6 +4,7 @@
     package="com.psg.leagueoflegend_app">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".LoLApp"
@@ -13,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LeagueOfLegendApp">
-        <activity android:name=".view.search.SearchActivity"></activity>
+        <activity android:name=".view.search.SearchActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".view.splash.SplashActivity"></activity>
         <activity
             android:name=".view.base.BaseActivity"

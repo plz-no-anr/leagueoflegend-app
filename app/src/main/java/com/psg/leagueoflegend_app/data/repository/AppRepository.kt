@@ -1,17 +1,20 @@
 package com.psg.leagueoflegend_app.data.repository
 
+import androidx.lifecycle.LiveData
 import com.psg.leagueoflegend_app.data.api.LeagueOfLegendAPI
 import com.psg.leagueoflegend_app.data.db.dao.LoLDao
+import com.psg.leagueoflegend_app.data.model.LeagueEntryDTO
 import com.psg.leagueoflegend_app.data.model.SearchEntity
 import com.psg.leagueoflegend_app.data.model.Summoner
 import com.psg.leagueoflegend_app.data.model.SummonerEntity
 import com.psg.leagueoflegend_app.utils.Constants
+import retrofit2.Response
 
 class AppRepository constructor(private val dao: LoLDao, private val api: LeagueOfLegendAPI) {
 
-    suspend fun getSummoner(name: String, apiKey: String) = api.getSummoner(name,apiKey)
+    suspend fun searchSummoner(name: String, apiKey: String): Response<Summoner> = api.getSummoner(name,apiKey)
 
-    suspend fun getLeague(summonerId:String?, apiKey: String) = api.getLeague(summonerId,apiKey)
+    suspend fun searchLeague(summonerId:String?, apiKey: String): Response<Set<LeagueEntryDTO>> = api.getLeague(summonerId,apiKey)
 
 
     // Room Main
@@ -41,7 +44,7 @@ class AppRepository constructor(private val dao: LoLDao, private val api: League
         dao.deleteSearch(searchEntity)
     }
 
-    suspend fun deleteSSearchAll(){
+    suspend fun deleteSearchAll(){
         dao.deleteSearchAll()
     }
 

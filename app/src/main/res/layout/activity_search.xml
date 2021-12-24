@@ -31,16 +31,17 @@
                 android:src="@drawable/ic_baseline_keyboard_backspace_24" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/et_Search"
                 android:layout_width="330dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:hint="검색할 닉네임을 입력해주세요" />
+                android:hint="검색할 닉네임을 입력해주세요"/>
 
             <ImageView
                 android:id="@+id/iv_search"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:onClick="@{()->viewModel.saveSummoner(etSearch.getText().toString)}"
                 android:src="@drawable/ic_baseline_search_24" />
         </LinearLayout>
 
@@ -48,7 +49,7 @@
             android:layout_width="72dp"
             android:layout_height="21dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:text="최근 검색"
             android:textSize="15dp"
             app:layout_constraintEnd_toStartOf="@+id/tv_allRemove"
@@ -60,10 +61,11 @@
             android:id="@+id/tv_allRemove"
             android:layout_width="72dp"
             android:layout_height="21dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="전체삭제"
             android:textSize="15dp"
+            android:onClick="@{()->viewModel.deleteAll()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.952"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +74,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_searchSummoner"
             android:layout_width="match_parent"
-            android:layout_height="634dp"
+            android:layout_height="638dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

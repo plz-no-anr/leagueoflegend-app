@@ -1,6 +1,7 @@
 package com.psg.leagueoflegend_app.view.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -21,6 +22,7 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppLogger.i(TAG,"onCreate")
+        Log.i(TAG,"onCreate")
         binding = DataBindingUtil.setContentView(this, res)
     }
 
@@ -28,8 +30,12 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
 
     }
 
+    open fun setRv(){
+
+    }
+
     open fun setToolbar(toolbar: Toolbar){
-        toolbar.title = "리그오브레전드 전적 검색"
+        toolbar.title = "전적 검색"
         setSupportActionBar(toolbar)
     }
 
@@ -68,6 +74,7 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
     override fun onStop() {
         super.onStop()
         AppLogger.i(TAG,"onStop")
+        Log.i(TAG,"onStop")
     }
 
     override fun onDestroy() {

@@ -1,10 +1,7 @@
 package com.psg.leagueoflegend_app.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.psg.leagueoflegend_app.data.model.SearchEntity
 import com.psg.leagueoflegend_app.data.model.SummonerEntity
 
@@ -13,7 +10,7 @@ interface LoLDao {
     @Query("SELECT * FROM SummonerEntity")
     fun getSummoner(): LiveData<List<SummonerEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSummoner(summonerEntity: SummonerEntity)
 
     @Delete
@@ -27,7 +24,7 @@ interface LoLDao {
     @Query("SELECT * FROM SearchEntity")
     fun getSearch(): LiveData<List<SearchEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSearch(searchEntity: SearchEntity)
 
     @Delete

@@ -34,7 +34,7 @@ val appModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MainViewModel() }
+    viewModel { MainViewModel(get()) }
     viewModel { SearchViewModel(get()) }
 }
 

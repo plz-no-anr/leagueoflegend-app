@@ -4,16 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="item"
+            name="searchItem"
             type="com.psg.leagueoflegend_app.data.model.SearchEntity" />
+    <variable
+        name="viewModel"
+        type="com.psg.leagueoflegend_app.view.search.SearchViewModel" />
     </data>
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
+    android:padding="5dp"
     android:gravity="center_vertical"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="5dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -27,30 +30,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="@{item.name}"
-            android:textSize="20sp"
+            android:text="@{searchItem.name}"
+            android:textSize="18dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:text="@{item.date}"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"/>
-
+            android:textColor="@android:color/black"/>
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/tv_date"
+        android:gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@{searchItem.date}"
+        android:textSize="18dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@android:color/black"/>
 
     <ImageView
         android:id="@+id/iv_remove"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
         android:layout_marginRight="10dp"
         android:src="@drawable/ic_baseline_clear_24"/>
 
