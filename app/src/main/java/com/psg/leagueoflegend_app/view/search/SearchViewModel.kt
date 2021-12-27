@@ -22,21 +22,21 @@ import retrofit2.Response
 import java.time.LocalDate
 class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
+//    private val _eventFlow = MutableSharedFlow<Event>()
+//    val eventFlow = _eventFlow.asSharedFlow()
 
     val searchList: LiveData<List<SearchEntity>> get() = repository.getSearch()
 
 
-    private fun toastEvent(text: String){
-        event(Event.ShowToast(text))
-   }
-
-    private fun event(event: Event) {
-        CoroutineScope(Dispatchers.IO).launch{
-            _eventFlow.emit(event)
-        }
-    }
+//    private fun toastEvent(text: String){
+//        event(Event.ShowToast(text))
+//   }
+//
+//    private fun event(event: Event) {
+//        CoroutineScope(Dispatchers.IO).launch{
+//            _eventFlow.emit(event)
+//        }
+//    }
 
     fun saveSummoner(name:String) {
         try {
@@ -56,7 +56,9 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
     private fun searchLeague(name: String, key: String, date:String){
         CoroutineScope(Dispatchers.IO).launch {
             val body = repository.searchSummoner(name,key).body()
-            if (body != null){
+            val code = repository.searchSummoner(name,key).code()
+
+            if (code == 200 && body != null){
             val res = repository.searchLeague(body.id,key)
             val iterator = res.body()?.iterator() ?: iterator {  }
             while (iterator.hasNext()){
@@ -65,13 +67,16 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
                     println("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
                     if (league.miniSeries != null){
                         val mini = SummonerEntity.MiniSeries(league.miniSeries.losses!!,league.miniSeries.target!!,league.miniSeries.wins!!,league.miniSeries.progress!!)
-                        repository.insertSummoner(SummonerEntity(league.summonerName!!,body.summonerLevel.toString(),body.profileIconId,league.tier!!,league.leaguePoints!!,league.rank!!,league.wins!!,league.losses!!,mini))
+                        val icon = "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
+
+                        repository.insertSummoner(SummonerEntity(league.summonerName!!,body.summonerLevel.toString(),icon,league.tier!!,league.leaguePoints!!,league.rank!!,league.wins!!,league.losses!!,mini))
                         println("승급전중")
                         println("승급전:${league.miniSeries.progress.replace("L","패").replace("W","승")}")
 
                     }else{
                         val mini = SummonerEntity.MiniSeries(0,0,0,"No")
-                        repository.insertSummoner(SummonerEntity(league.summonerName!!,body.summonerLevel.toString(),body.profileIconId,league.tier!!,league.leaguePoints!!,league.rank!!,league.wins!!,league.losses!!,mini))
+                        val icon = "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
+                        repository.insertSummoner(SummonerEntity(league.summonerName!!,body.summonerLevel.toString(),icon,league.tier!!,league.leaguePoints!!,league.rank!!,league.wins!!,league.losses!!,mini))
                         println("승급전아님")
 
                     }
@@ -80,7 +85,13 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
                 }
             }
             } else {
-                toastEvent("존재하지 않는 아이디입니다.")
+                when(code){
+                    403 -> toastEvent("토큰이 만료되었습니다.")
+                    404 -> toastEvent("존재하지 않는 아이디입니다.")
+                }
+                println("리스폰스에러바디:${repository.searchSummoner(name,key).errorBody()?.string()}")
+                println("에러코드:${repository.searchSummoner(name,key).code()}")
+//                toastEvent("존재하지 않는 아이디입니다.")
                 println("존재하지 않는 아이디")
             }
 
@@ -106,9 +117,9 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
         }
     }
 
-    sealed class Event {
-        data class ShowToast(val text: String) : Event()
-    }
+//    sealed class Event {
+//        data class ShowToast(val text: String) : Event()
+//    }
 
 
 }

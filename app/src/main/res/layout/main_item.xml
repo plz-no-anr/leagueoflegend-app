@@ -28,91 +28,110 @@
 
             <ImageView
                 android:id="@+id/iv_icon"
-                android:layout_width="98dp"
-                android:layout_height="98dp"
+                android:layout_width="105dp"
+                android:layout_height="100dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/lol"
+                app:image="@{item.icon}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_id"
-                android:layout_width="98dp"
+                android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_icon"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="2dp"
                 android:layout_marginTop="12dp"
                 android:textAlignment="center"
                 android:text="@{item.name}"
+                android:hint="이름"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_icon" />
 
             <TextView
                 android:id="@+id/tv_level"
-                android:layout_width="98dp"
+                android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_icon"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="2dp"
                 android:textAlignment="center"
-                android:text="@{item.level}"
+                android:text="@{item.getLevels()}"
+                android:hint="레벨"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="32dp"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.256"
+                app:tiericon="@{item.tierIcon()}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="솔로랭크"
+                android:textColor="#808080"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_tier_rank"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.724"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.727" />
 
             <TextView
                 android:id="@+id/tv_tier_rank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="48dp"
                 android:layout_toEndOf="@+id/iv_icon"
+                android:hint="티어 랭크"
                 android:text="@{item.getTierRank()}"
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/iv_icon"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_leaguePoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/tv_tier_rank"
-                android:text="@{item.leaguePoints}"
-                android:textSize="15sp"
+                android:hint="리그포인트/승리패배"
+                android:text="@{item.getLeaguePoint()}"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_tier_rank"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_winLoss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="12dp"
-                android:layout_toEndOf="@id/tv_tier_rank"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:text=""
-                app:layout_constraintStart_toEndOf="@+id/iv_icon"
-                app:layout_constraintTop_toBottomOf="@+id/tv_tier_rank" />
+                app:layout_constraintHorizontal_bias="0.663"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                app:layout_constraintVertical_bias="0.376" />
 
             <ImageView
                 android:id="@+id/iv_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="34dp"
                 android:src="@drawable/ic_baseline_delete_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.577"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.953"
+                app:layout_constraintStart_toEndOf="@+id/tv_leaguePoint"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.903" />
+                app:layout_constraintVertical_bias="0.751" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

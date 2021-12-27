@@ -24,6 +24,10 @@ class AppRepository constructor(private val dao: LoLDao, private val api: League
         dao.insertSummoner(summonerEntity)
     }
 
+    suspend fun updateSummoner(summonerEntity: SummonerEntity){
+        dao.updateSummoner(summonerEntity)
+    }
+
     suspend fun deleteSummoner(summonerEntity: SummonerEntity){
         dao.deleteSummoner(summonerEntity)
     }

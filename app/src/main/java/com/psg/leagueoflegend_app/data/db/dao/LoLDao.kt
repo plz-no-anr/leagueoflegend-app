@@ -13,6 +13,9 @@ interface LoLDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSummoner(summonerEntity: SummonerEntity)
 
+    @Update
+    suspend fun updateSummoner(summonerEntity: SummonerEntity)
+
     @Delete
     suspend fun deleteSummoner(summonerEntity: SummonerEntity)
 

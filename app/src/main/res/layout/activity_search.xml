@@ -35,7 +35,7 @@
                 android:layout_width="330dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:hint="검색할 닉네임을 입력해주세요"/>
+                android:hint="검색할 닉네임을 입력해주세요" />
 
             <ImageView
                 android:id="@+id/iv_search"
@@ -45,43 +45,63 @@
                 android:src="@drawable/ic_baseline_search_24" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="72dp"
-            android:layout_height="21dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="최근 검색"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_allRemove"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-        <TextView
-            android:id="@+id/tv_allRemove"
-            android:layout_width="72dp"
-            android:layout_height="21dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="전체삭제"
-            android:textSize="15dp"
-            android:onClick="@{()->viewModel.deleteAll()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.952"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_searchSummoner"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="638dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_allRemove"
-            app:layout_constraintVertical_bias="1.0"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                <TextView
+                    android:layout_width="72dp"
+                    android:layout_height="21dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:text="최근 검색"
+                    android:textSize="15dp"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_allRemove"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+                <TextView
+                    android:id="@+id/tv_allRemove"
+                    android:layout_width="72dp"
+                    android:layout_height="21dp"
+                    android:layout_marginStart="230dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:onClick="@{()->viewModel.deleteAll()}"
+                    android:text="전체삭제"
+                    android:textSize="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.952"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_searchSummoner"
+                android:layout_width="match_parent"
+                android:layout_height="638dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                app:layout_constraintVertical_bias="1.0" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

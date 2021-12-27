@@ -2,22 +2,30 @@ package com.psg.leagueoflegend_app.view.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.psg.leagueoflegend_app.LoLApp
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.api.RetrofitClient
 import com.psg.leagueoflegend_app.data.model.LeagueEntryDTO
 import com.psg.leagueoflegend_app.data.model.Summoner
+import com.psg.leagueoflegend_app.data.model.SummonerEntity
 import com.psg.leagueoflegend_app.databinding.ActivityMainBinding
 import com.psg.leagueoflegend_app.utils.Constants
+import com.psg.leagueoflegend_app.utils.NetworkStatus
 import com.psg.leagueoflegend_app.view.adapter.MainAdapter
 import com.psg.leagueoflegend_app.view.base.BaseActivity
+import com.psg.leagueoflegend_app.view.base.BaseViewModel
 import com.psg.leagueoflegend_app.view.search.SearchActivity
+import com.psg.leagueoflegend_app.view.search.SearchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import retrofit2.Call
@@ -28,11 +36,17 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
     override val TAG: String = MainActivity::class.java.simpleName
     override val viewModel: MainViewModel by inject()
     private val adapter = MainAdapter()
+    private var refreshLock = false
+    private lateinit var list : List<SummonerEntity>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setToolbar(binding.toolbar)
+        setObserveList()
+        setNetworkObserve()
         setRv()
+        setDisplay()
+        setEventFlow()
 
     }
 
@@ -44,16 +58,60 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                 true
             }
             R.id.option -> {
-                true
+                true // 드로어 레이아웃 추가
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
 
+    private fun setEventFlow(){
+        CoroutineScope(Dispatchers.IO).launch{
+            viewModel.eventFlow.collect { event -> handleEvent(event) }
+        }
+    }
+
+    private fun handleEvent(event: BaseViewModel.Event) = when (event){
+        is BaseViewModel.Event.ShowToast ->
+            CoroutineScope(Dispatchers.Main).launch {
+                Toast.makeText(this@MainActivity,event.text, Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
     override fun setDisplay(){
+        binding.slMain.setOnRefreshListener {
+//            if (!refreshLock) {
+                viewModel.refresh(list)
+//                setLock().start()
+//            }
+            binding.slMain.isRefreshing = false
+
+        }
 
     }
+
+    private fun setObserveList(){
+        viewModel.summonerList.observe(this,{
+            if (it != null){
+                list = it
+            }
+        })
+    }
+
+//    private fun setLock(): CountDownTimer =
+//          object : CountDownTimer(0,30000){
+//            override fun onTick(millisUntilFinished: Long) {
+//                println("타이머 동작중")
+//                refreshLock = true
+//            }
+//
+//            override fun onFinish() {
+//                refreshLock = false
+//            }
+//
+//        }
+
 
     override fun setRv() {
         adapter.setHasStableIds(true)
@@ -66,7 +124,6 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         viewModel.summonerList.observe(this,{
             if (it != null){
                 adapter.setData(it)
-                binding.rvMain.scrollToPosition(0)
                 println("Main: null이 아님")
             }else{
                 println("Main: db값 null")
@@ -74,83 +131,17 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         })
     }
 
+    private fun setNetworkObserve(){
+        val status = NetworkStatus(applicationContext)
+        status.observe(this, Observer {
+            if (it){
 
-    private fun getSum(){
-        var id: String
-        CoroutineScope(Dispatchers.IO).launch {
-//            val call = RetrofitClient.summonerService
-//            id = call.getSummoner("서포터는살려주자", Constants.API_KEY).body()?.id.toString()
-//            call.getLeague(id,Constants.API_KEY).enqueue(object : Callback<Set<LeagueEntryDTO>>{
-//                override fun onResponse(
-//                    call: Call<Set<LeagueEntryDTO>>,
-//                    response: Response<Set<LeagueEntryDTO>>
-//                ) {
-//                    val iterator = response.body()?.iterator() ?: iterator {  }
-//                    while (iterator.hasNext()){
-//                        val league = iterator.next()
-//                        if (league.queueType == "RANKED_SOLO_5x5") {
-//                            println("소환사이름:${league.summonerName},티어:${league.tier},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
-////                            println("승급전:${league.miniSeries?.progress}")
-//                            println("승급전:${league.miniSeries?.progress?.replace("L","패")?.replace("W","승")}")
-//                        }
-//                    }
-//                    println("에러정보${response.errorBody()?.string()}")
-//                }
-//
-//                override fun onFailure(call: Call<Set<LeagueEntryDTO>>, t: Throwable) {
-//                    t.printStackTrace()
-//                }
+            } else {
 
-//            })
-        }
+            }
+        })
     }
 
-
-//    private fun getSummoner():String{
-//        var id = ""
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val call = RetrofitClient.summonerService
-//            call.getSummoner("서포터는살려주자", Constants.API_KEY).enqueue(object : Callback<Summoner> {
-//                override fun onResponse(call: Call<Summoner>, response: Response<Summoner>) {
-//                    println("소환사정보:${response.body() as Summoner}")
-//                    println("에러정보${response.errorBody()?.string()}")
-//                }
-//
-//                override fun onFailure(call: Call<Summoner>, t: Throwable) {
-//                    t.printStackTrace()
-//                }
-//
-//            })
-//        }
-//        return id
-//    }
-//
-//    private fun getLeague(){
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val call = RetrofitClient.summonerService
-//            call.getLeague("6jhtWqCOUfnNqpaZRn1lNbXrH1TCkwPNETy6X836fG3LY7s",Constants.API_KEY).enqueue(object : Callback<Set<LeagueEntryDTO>>{
-//                override fun onResponse(
-//                    call: Call<Set<LeagueEntryDTO>>,
-//                    response: Response<Set<LeagueEntryDTO>>
-//                ) {
-//                    val iterator = response.body()?.iterator() ?: iterator {  }
-//                    while (iterator.hasNext()){
-//                        val league = iterator.next()
-//                        if (league.queueType == "RANKED_SOLO_5x5") {
-//                            println("전적${league.wins}승,${league.losses}패")
-//                        }
-//                    }
-////                    println("리그정보:${response.body()!!}")
-//                    println("에러정보${response.errorBody()?.string()}")
-//                }
-//
-//                override fun onFailure(call: Call<Set<LeagueEntryDTO>>, t: Throwable) {
-//                    t.printStackTrace()
-//                }
-//
-//            })
-//        }
-//    }
 
 
 }

@@ -12,6 +12,7 @@ import com.psg.leagueoflegend_app.data.model.SearchEntity
 import com.psg.leagueoflegend_app.databinding.ActivitySearchBinding
 import com.psg.leagueoflegend_app.view.adapter.SearchAdapter
 import com.psg.leagueoflegend_app.view.base.BaseActivity
+import com.psg.leagueoflegend_app.view.base.BaseViewModel
 import com.psg.leagueoflegend_app.view.main.MainActivity
 import kotlinx.android.synthetic.main.search_item.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -46,8 +47,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
         }
     }
 
-    private fun handleEvent(event: SearchViewModel.Event) = when (event){
-        is SearchViewModel.Event.ShowToast ->
+    private fun handleEvent(event: BaseViewModel.Event) = when (event){
+        is BaseViewModel.Event.ShowToast ->
             CoroutineScope(Dispatchers.Main).launch {
                 Toast.makeText(this@SearchActivity,event.text, Toast.LENGTH_SHORT).show()
             }

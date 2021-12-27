@@ -40,8 +40,6 @@ class MainAdapter(var list: List<SummonerEntity> = mutableListOf()):
 
 
 
-
-
     inner class MainHolder(private val binding: MainItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
                 fun bind(item: SummonerEntity){
