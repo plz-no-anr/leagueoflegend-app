@@ -27,6 +27,12 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
 
     val searchList: LiveData<List<SearchEntity>> get() = repository.getSearch()
 
+    private val _apiKey = MutableLiveData<String>()
+    val apiKey: LiveData<String> get() = _apiKey
+
+    init {
+        _apiKey.value = repository.getApikey()
+    }
 
 //    private fun toastEvent(text: String){
 //        event(Event.ShowToast(text))
@@ -42,7 +48,10 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
         try {
             val date = LocalDate.now().toString()
             if (name.isNotEmpty()){
-                searchLeague(name,Constants.API_KEY,date)
+                apiKey.value?.let {
+                    searchLeague(name,it,date)
+                }
+
             } else{
                 println("텍스트가 null")
                 toastEvent("아이디를 입력해주세요.")
@@ -55,6 +64,7 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
 
     private fun searchLeague(name: String, key: String, date:String){
         CoroutineScope(Dispatchers.IO).launch {
+            try {
             val body = repository.searchSummoner(name,key).body()
             val code = repository.searchSummoner(name,key).code()
 
@@ -86,16 +96,21 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
             }
             } else {
                 when(code){
+                    401 -> toastEvent("토큰이 인증되지 않았습니다.")
                     403 -> toastEvent("토큰이 만료되었습니다.")
                     404 -> toastEvent("존재하지 않는 아이디입니다.")
                 }
                 println("리스폰스에러바디:${repository.searchSummoner(name,key).errorBody()?.string()}")
                 println("에러코드:${repository.searchSummoner(name,key).code()}")
 //                toastEvent("존재하지 않는 아이디입니다.")
-                println("존재하지 않는 아이디")
+                println("에러")
             }
-
+            } catch (e : Exception){
+                e.printStackTrace()
+            }
         }
+
+
     }
 
     fun getAllSearch(): LiveData<List<SearchEntity>> {
@@ -116,6 +131,9 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
             repository.deleteSearchAll()
         }
     }
+
+
+
 
 //    sealed class Event {
 //        data class ShowToast(val text: String) : Event()

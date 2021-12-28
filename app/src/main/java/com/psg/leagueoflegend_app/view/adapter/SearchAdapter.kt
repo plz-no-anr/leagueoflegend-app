@@ -1,6 +1,7 @@
 package com.psg.leagueoflegend_app.view.adapter
 
 import android.content.Context
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.model.SearchEntity
+import com.psg.leagueoflegend_app.databinding.ActivitySearchBinding
 import com.psg.leagueoflegend_app.databinding.SearchItemBinding
+import kotlinx.android.synthetic.main.activity_search.view.*
 import kotlinx.android.synthetic.main.search_item.view.*
 
 class SearchAdapter(var list: List<SearchEntity> = mutableListOf()) :
@@ -56,6 +59,7 @@ class SearchAdapter(var list: List<SearchEntity> = mutableListOf()) :
 
             val pos = bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION){
+
                 itemView.iv_remove.setOnClickListener {
                     listener?.onItemClick(itemView.iv_remove,item,pos)
                 }

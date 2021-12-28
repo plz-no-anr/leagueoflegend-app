@@ -2,6 +2,7 @@ package com.psg.leagueoflegend_app.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.psg.leagueoflegend_app.data.model.ProfileEntity
 import com.psg.leagueoflegend_app.data.model.SearchEntity
 import com.psg.leagueoflegend_app.data.model.SummonerEntity
 
@@ -35,5 +36,18 @@ interface LoLDao {
 
     @Query("DELETE FROM SearchEntity")
     suspend fun deleteSearchAll()
+
+    @Query("SELECT * FROM ProfileEntity")
+    fun getProfile(): LiveData<ProfileEntity>
+
+    @Insert
+    suspend fun insertProfile(profileEntity: ProfileEntity)
+
+    @Update
+    suspend fun updateProfile(profileEntity: ProfileEntity)
+
+    @Query("DELETE FROM ProfileEntity")
+    suspend fun deleteProfile()
+
 
 }

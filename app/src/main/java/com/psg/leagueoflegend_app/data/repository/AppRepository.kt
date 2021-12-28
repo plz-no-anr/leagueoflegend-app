@@ -1,12 +1,10 @@
 package com.psg.leagueoflegend_app.data.repository
 
 import androidx.lifecycle.LiveData
+import com.psg.leagueoflegend_app.LoLApp
 import com.psg.leagueoflegend_app.data.api.LeagueOfLegendAPI
 import com.psg.leagueoflegend_app.data.db.dao.LoLDao
-import com.psg.leagueoflegend_app.data.model.LeagueEntryDTO
-import com.psg.leagueoflegend_app.data.model.SearchEntity
-import com.psg.leagueoflegend_app.data.model.Summoner
-import com.psg.leagueoflegend_app.data.model.SummonerEntity
+import com.psg.leagueoflegend_app.data.model.*
 import com.psg.leagueoflegend_app.utils.Constants
 import retrofit2.Response
 
@@ -37,7 +35,6 @@ class AppRepository constructor(private val dao: LoLDao, private val api: League
     }
 
     // Search
-
     fun getSearch() = dao.getSearch()
 
     suspend fun insertSearch(searchEntity: SearchEntity){
@@ -51,5 +48,33 @@ class AppRepository constructor(private val dao: LoLDao, private val api: League
     suspend fun deleteSearchAll(){
         dao.deleteSearchAll()
     }
+
+    // API KEY
+    fun getApikey() = LoLApp.pref.getApikey()
+
+    fun setApikey(value: String) {
+        LoLApp.pref.setApikey(value)
+    }
+
+    fun delApikey() {
+        LoLApp.pref.delApikey()
+    }
+
+    // Search
+    fun getProfile() = dao.getProfile()
+
+    suspend fun insertProfile(profileEntity: ProfileEntity){
+        dao.insertProfile(profileEntity)
+    }
+
+    suspend fun updateProfile(profileEntity: ProfileEntity){
+        dao.updateProfile(profileEntity)
+    }
+
+    suspend fun deleteProfile(){
+        dao.deleteProfile()
+    }
+
+
 
 }

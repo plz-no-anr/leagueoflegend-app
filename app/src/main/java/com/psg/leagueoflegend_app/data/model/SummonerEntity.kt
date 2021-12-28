@@ -1,6 +1,7 @@
 package com.psg.leagueoflegend_app.data.model
 
 import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.psg.leagueoflegend_app.R
@@ -32,8 +33,7 @@ data class SummonerEntity(
 
     fun getTierRank() = "$tier $rank"
 
-
-    fun tierIcon()= when(tier){
+    fun tierIcon() = when(tier){
         "IRON" -> R.drawable.emblem_iron
         "BRONZE" -> R.drawable.emblem_bronze
         "SILVER" -> R.drawable.emblem_silver
@@ -46,7 +46,26 @@ data class SummonerEntity(
         else -> R.drawable.lol
     }
 
+    fun getMiniVisible():String = if (miniSeries?.progress != "No") "visible" else "gone"
 
+    fun miniImage1() = getMiniImage(0)
+    fun miniImage2() = getMiniImage(1)
+    fun miniImage3() = getMiniImage(2)
+    fun miniImage4() = getMiniImage(3)
+    fun miniImage5() = getMiniImage(4)
+
+    private fun getMiniImage(index: Int):Int{
+        var result = 0
+        if (miniSeries != null && miniSeries.progress != "No"){
+            result = when(miniSeries.progress[index]){
+                'W' -> R.drawable.ic_baseline_check_24
+                'L' -> R.drawable.ic_baseline_close_24
+                'N' -> R.drawable.ic_baseline_horizontal_rule_24
+                else -> R.drawable.ic_baseline_horizontal_rule_24
+            }
+        }
+        return result
+    }
 
 
 }

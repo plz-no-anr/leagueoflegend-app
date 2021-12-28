@@ -2,6 +2,7 @@ package com.psg.leagueoflegend_app.view.search
 
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.get
@@ -37,8 +38,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
         setRv()
         setEventFlow()
 
-
-
     }
 
     private fun setEventFlow(){
@@ -59,6 +58,15 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
         binding.ivBackspace.setOnClickListener {
             println("뒤로가기클릭")
             finish()
+        }
+        binding.etSearch.setOnKeyListener { _, keyCode, _ ->
+            when(keyCode){
+                KeyEvent.KEYCODE_ENTER -> {
+                    viewModel.saveSummoner(binding.etSearch.text.toString())
+                    true
+                }
+            }
+            true
         }
 
     }

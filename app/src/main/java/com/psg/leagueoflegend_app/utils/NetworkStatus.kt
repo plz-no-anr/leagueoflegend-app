@@ -43,6 +43,8 @@ class NetworkStatus(private val context: Context) : LiveData<Boolean>()
     override fun onInactive()
     {
         super.onInactive()
+        try {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             connectivityManager.unregisterNetworkCallback(connectivityManagerCallback())
@@ -50,6 +52,10 @@ class NetworkStatus(private val context: Context) : LiveData<Boolean>()
         {
             context.unregisterReceiver(networkReceiver)
         }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

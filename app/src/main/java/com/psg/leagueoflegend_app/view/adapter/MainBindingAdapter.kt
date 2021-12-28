@@ -1,7 +1,9 @@
 package com.psg.leagueoflegend_app.view.adapter
 
 import android.content.Context
+import android.view.View
 import android.widget.ImageView
+import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,10 +30,14 @@ fun tierIcon(view: ImageView, int: Int){
     view.setImageResource(int)
 }
 
-@BindingAdapter("refreshing")
-fun SwipeRefreshLayout.refreshing(visible: Boolean) {
+//@BindingAdapter("minivisible")
+//fun mini(view: ImageView, boolean: Boolean){
+//    if (boolean) view.visibility = View.VISIBLE else view.visibility = View.GONE
+//}
 
-    isRefreshing = visible
+@BindingAdapter("mini")
+fun miniImage(view: ImageView, int: Int){
+    view.setImageResource(int)
 }
 
 fun getProgressDrawable(context: Context): CircularProgressDrawable { //이미지 로딩 표시
