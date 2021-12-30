@@ -15,12 +15,13 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.LeagueOfLegendApp">
-        <activity android:name=".view.search.SearchActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".view.splash.SplashActivity"></activity>
+        <activity
+            android:name=".view.search.SearchActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".view.splash.SplashActivity" />
         <activity
             android:name=".view.base.BaseActivity"
-            tools:ignore="Instantiatable" />
+            tools:ignore="Instantiatable"/>
         <activity android:name=".view.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

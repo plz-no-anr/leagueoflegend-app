@@ -59,15 +59,15 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
             println("뒤로가기클릭")
             finish()
         }
-        binding.etSearch.setOnKeyListener { _, keyCode, _ ->
-            when(keyCode){
-                KeyEvent.KEYCODE_ENTER -> {
-                    viewModel.saveSummoner(binding.etSearch.text.toString())
-                    true
-                }
-            }
-            true
-        }
+//        binding.etSearch.setOnKeyListener { _, keyCode, _ ->
+//            when(keyCode){
+//                KeyEvent.KEYCODE_ENTER -> {
+//                    viewModel.saveSummoner(binding.etSearch.text.toString())
+//                    true
+//                }
+//            }
+//            true
+//        }
 
     }
 

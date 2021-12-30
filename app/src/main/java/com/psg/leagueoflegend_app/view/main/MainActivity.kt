@@ -81,10 +81,11 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                     binding.nvMain.tv_name.text = profile.name
                     binding.nvMain.tv_level.text = "LV: ${profile.level}"
                     viewModel.bindImage(binding.nvMain.iv_image,profile.icon)
+                    println("아이콘:${profile.icon}")
                 } else {
                     binding.nvMain.tv_name.text = "이름"
                     binding.nvMain.tv_level.text = "LV: "
-                    viewModel.bindImage(binding.nvMain.iv_image,"")
+                    viewModel.bindImage(binding.nvMain.iv_image,"http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/29.png")
                 }
                 true // 드로어 레이아웃 추가
             }

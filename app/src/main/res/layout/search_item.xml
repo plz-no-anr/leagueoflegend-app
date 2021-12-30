@@ -32,8 +32,7 @@
             android:includeFontPadding="false"
             android:text="@{searchItem.name}"
             android:textSize="18dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@android:color/black"/>
+            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
     <TextView
@@ -44,8 +43,7 @@
         android:includeFontPadding="false"
         android:text="@{searchItem.date}"
         android:textSize="18dp"
-        android:layout_marginRight="10dp"
-        android:textColor="@android:color/black"/>
+        android:layout_marginRight="10dp"/>
 
     <ImageView
         android:id="@+id/iv_remove"

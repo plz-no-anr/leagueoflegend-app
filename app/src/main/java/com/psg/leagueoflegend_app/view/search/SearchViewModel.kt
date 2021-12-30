@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.time.LocalDate
-class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
+
+class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
 
 //    private val _eventFlow = MutableSharedFlow<Event>()
 //    val eventFlow = _eventFlow.asSharedFlow()
@@ -44,68 +45,115 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
 //        }
 //    }
 
-    fun saveSummoner(name:String) {
+    fun saveSummoner(name: String) {
         try {
             val date = LocalDate.now().toString()
-            if (name.isNotEmpty()){
+            if (name.isNotEmpty()) {
                 apiKey.value?.let {
-                    searchLeague(name,it,date)
+                    searchLeague(name, it, date)
                 }
 
-            } else{
+            } else {
                 println("텍스트가 null")
                 toastEvent("아이디를 입력해주세요.")
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
     }
 
-    private fun searchLeague(name: String, key: String, date:String){
+    private fun searchLeague(name: String, key: String, date: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-            val body = repository.searchSummoner(name,key).body()
-            val code = repository.searchSummoner(name,key).code()
+                val body = repository.searchSummoner(name, key).body()
+                val code = repository.searchSummoner(name, key).code()
 
-            if (code == 200 && body != null){
-            val res = repository.searchLeague(body.id,key)
-            val iterator = res.body()?.iterator() ?: iterator {  }
-            while (iterator.hasNext()){
-                val league = iterator.next()
-                if (league.queueType == "RANKED_SOLO_5x5") {
-                    println("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
-                    if (league.miniSeries != null){
-                        val mini = SummonerEntity.MiniSeries(league.miniSeries.losses!!,league.miniSeries.target!!,league.miniSeries.wins!!,league.miniSeries.progress!!)
-                        val icon = "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
+                if (code == 200 && body != null) {
+                    println("코드는?${body.id}")
+                    val res = repository.searchLeague(body.id, key)
+                    if (res.body()?.size != 0) {
+                        val iterator = res.body()?.iterator() ?: iterator { }
+                        while (iterator.hasNext()) {
+                            val league = iterator.next()
+                            if (league.queueType == "RANKED_SOLO_5x5") {
+                                println("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
+                                if (league.miniSeries != null) {
+                                    println("아이콘id:${body.profileIconId}")
+                                    val mini = SummonerEntity.MiniSeries(
+                                        league.miniSeries.losses!!,
+                                        league.miniSeries.target!!,
+                                        league.miniSeries.wins!!,
+                                        league.miniSeries.progress!!
+                                    )
+                                    val icon =
+                                        "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
 
-                        repository.insertSummoner(SummonerEntity(league.summonerName!!,body.summonerLevel.toString(),icon,league.tier!!,league.leaguePoints!!,league.rank!!,league.wins!!,league.losses!!,mini))
-                        println("승급전중")
-                        println("승급전:${league.miniSeries.progress.replace("L","패").replace("W","승")}")
+                                    repository.insertSummoner(
+                                        SummonerEntity(
+                                            league.summonerName!!,
+                                            body.summonerLevel.toString(),
+                                            icon,
+                                            league.tier!!,
+                                            league.leaguePoints!!,
+                                            league.rank!!,
+                                            league.wins!!,
+                                            league.losses!!,
+                                            mini
+                                        )
+                                    )
+                                    println("승급전중")
+                                    println(
+                                        "승급전:${
+                                            league.miniSeries.progress.replace("L", "패")
+                                                .replace("W", "승")
+                                        }"
+                                    )
 
-                    }else{
-                        val mini = SummonerEntity.MiniSeries(0,0,0,"No")
-                        val icon = "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
-                        repository.insertSummoner(SummonerEntity(league.summonerName!!,body.summonerLevel.toString(),icon,league.tier!!,league.leaguePoints!!,league.rank!!,league.wins!!,league.losses!!,mini))
-                        println("승급전아님")
+                                } else {
+                                    val mini = SummonerEntity.MiniSeries(0, 0, 0, "No")
+                                    val icon =
+                                        "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
+                                    repository.insertSummoner(
+                                        SummonerEntity(
+                                            league.summonerName!!,
+                                            body.summonerLevel.toString(),
+                                            icon,
+                                            league.tier!!,
+                                            league.leaguePoints!!,
+                                            league.rank!!,
+                                            league.wins!!,
+                                            league.losses!!,
+                                            mini
+                                        )
+                                    )
+                                    println("승급전아님")
 
+                                }
+                                toastEvent("등록성공")
+                                insertSearch(SearchEntity(league.summonerName, date))
+                            }
+                        }
+                    } else {
+                        toastEvent("이번 시즌 전적이 존재하지 않습니다.")
                     }
-                    toastEvent("등록성공")
-                    insertSearch(SearchEntity(league.summonerName,date))
+
+                } else {
+                    when (code) {
+                        401 -> toastEvent("토큰이 인증되지 않았습니다.")
+                        403 -> toastEvent("토큰이 만료되었습니다.")
+                        404 -> toastEvent("존재하지 않는 아이디입니다.")
+                        else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
+                    }
+                    println(
+                        "리스폰스에러바디:${
+                            repository.searchSummoner(name, key).errorBody()?.string()
+                        }"
+                    )
+                    println("에러코드:${repository.searchSummoner(name, key).code()}")
+                    println("에러")
                 }
-            }
-            } else {
-                when(code){
-                    401 -> toastEvent("토큰이 인증되지 않았습니다.")
-                    403 -> toastEvent("토큰이 만료되었습니다.")
-                    404 -> toastEvent("존재하지 않는 아이디입니다.")
-                }
-                println("리스폰스에러바디:${repository.searchSummoner(name,key).errorBody()?.string()}")
-                println("에러코드:${repository.searchSummoner(name,key).code()}")
-//                toastEvent("존재하지 않는 아이디입니다.")
-                println("에러")
-            }
-            } catch (e : Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -122,17 +170,15 @@ class SearchViewModel(private val repository: AppRepository): BaseViewModel() {
     }
 
 
-    fun deleteSearch(searchEntity: SearchEntity)= CoroutineScope(Dispatchers.IO).launch {
+    fun deleteSearch(searchEntity: SearchEntity) = CoroutineScope(Dispatchers.IO).launch {
         repository.deleteSearch(searchEntity)
     }
 
-    fun deleteAll(){
+    fun deleteAll() {
         CoroutineScope(Dispatchers.IO).launch {
             repository.deleteSearchAll()
         }
     }
-
-
 
 
 //    sealed class Event {
