@@ -38,6 +38,7 @@ import com.psg.leagueoflegend_app.view.base.BaseActivity
 import com.psg.leagueoflegend_app.view.base.BaseViewModel
 import com.psg.leagueoflegend_app.view.search.SearchActivity
 import com.psg.leagueoflegend_app.view.search.SearchViewModel
+import com.psg.leagueoflegend_app.view.spectator.SpectatorActivity
 import kotlinx.android.synthetic.main.dialog_settingkey.*
 import kotlinx.android.synthetic.main.header_navi.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -191,16 +192,26 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
 
         adapter.setOnItemClickListener(object : MainAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: SummonerEntity, pos: Int) {
-                if (v.id == R.id.iv_delete){
-                    viewModel.deleteSummoner(data)
-                    println("아이템삭제")
-                    Toast.makeText(this@MainActivity,"삭제 성공", Toast.LENGTH_SHORT).show()
-                } else {
-                    viewModel.insertProfile(ProfileEntity(data.name,data.level,data.icon))
-                    println("프로필변경")
-                    Toast.makeText(this@MainActivity,"프로필 변경 성공", Toast.LENGTH_SHORT).show()
+                when (v.id){
+                    R.id.iv_delete ->{
+                        viewModel.deleteSummoner(data)
+                        println("아이템삭제")
+                        Toast.makeText(this@MainActivity,"삭제 성공", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.iv_addProfile ->{
+                        viewModel.insertProfile(ProfileEntity(data.name,data.level,data.icon))
+                        println("프로필변경")
+                        Toast.makeText(this@MainActivity,"프로필 변경 성공", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.ll_spectator ->{
+                        val intent = Intent(this@MainActivity,SpectatorActivity::class.java)
+                        intent.putExtra("name",data.name)
+                        startActivity(intent)
+                        println("관전액티비티 시작")
+                    }
 
                 }
+
 
             }
 

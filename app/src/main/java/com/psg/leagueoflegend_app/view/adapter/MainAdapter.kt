@@ -66,18 +66,18 @@ class MainAdapter(var list: List<SummonerEntity> = mutableListOf()):
                             listener?.onItemClick(itemView.iv_addProfile,item,pos)
                         }
 
+                        itemView.ll_spectator.setOnClickListener {
+//                            if (item.isPlaying) {
+                                listener?.onItemClick(itemView.ll_spectator, item, pos)
+//                            }
+                        }
+
                         if (item.miniSeries?.progress != "No"){
                             itemView.ll_mini.visibility = View.VISIBLE
                         } else {
                             itemView.ll_mini.visibility = View.INVISIBLE
                         }
-                        itemView.ll_spectator.setOnClickListener {
-                            if (item.isPlaying){
-                                // 게임중
-                                val json = LoLApp.getContext().assets.open("map.json").reader().readText()
-                                println("제이슨$json")
-                            }
-                        }
+
                     }
                 }
             }

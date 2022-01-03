@@ -28,6 +28,7 @@ class LoLApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         startKoin {
             androidLogger(Level.NONE)
             androidContext(this@LoLApp)

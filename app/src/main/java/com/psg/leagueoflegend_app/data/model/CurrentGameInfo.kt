@@ -4,11 +4,11 @@ data class CurrentGameInfo(
     val gameId: Long,
     val gameType: String,
     val gameStartTime: Long,
-    val mapId: Long,
+    val mapId: Long, // 맵 정보
     val gameLength: Long,
     val platformId: String,
-    val gameMode: String,
-    val bannedChampions: List<BannedChampion>,
+    val gameMode: String, // 게임 모드
+    val bannedChampions: List<BannedChampion>, // 밴한 챔프 리스트
     val gameQueueConfigId: Long,
     val observers: Observer,
     val participants: List<CurrentGameParticipant> // 팀원 정보
@@ -22,11 +22,11 @@ data class CurrentGameInfo(
         val encryptionKey: String
     )
     data class CurrentGameParticipant(
-        val championId:	Long,
+        val championId:	Long, // 챔프 정보
         val perks: Perks, // 룬
         val profileIconId: Long,
         val bot: Boolean, // 봇인지
-        val teamId:	Long,
+        val teamId:	Long, // 팀정보
         val summonerName: String,
         val summonerId:	String,
         val spell1Id: Long, // 스펠

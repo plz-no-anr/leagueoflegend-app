@@ -1,12 +1,8 @@
 package com.psg.leagueoflegend_app.view.search
 
-import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.get
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.model.SearchEntity
@@ -21,8 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.scope.lifecycleScope
-import java.time.LocalDate
 import java.util.*
 
 class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.layout.activity_search) {
