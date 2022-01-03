@@ -238,19 +238,26 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         val params = dialog.window?.attributes
         params?.width = 1000
         params?.height = 1000
-        viewModel.apiKey.observe(this,{
-            if (it != null){
-                dialog.tv_key.text = "키: $it"
-            } else {
-                dialog.tv_key.text = "키: "
-            }
-        })
+
+        println("api키?${LoLApp.pref.getApikey()}")
+        dialog.tv_key.text = LoLApp.pref.getApikey()
 
         dialog.show()
         dialog.tv_key.setOnClickListener {
             if (dialog.tv_key.text.isNotEmpty()){
-                deleteKeyDialog()
-                dialog.tv_key.text = ""
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("키 삭제").setMessage("정말로 삭제하시겠습니까?")
+                builder.setPositiveButton("삭제") { dialog1, _ ->
+                    viewModel.delApikey()
+                    dialog1.dismiss()
+                    dialog.tv_key.text = ""
+                }
+                builder.setNegativeButton("취소") { dialog, _ ->
+                    dialog.dismiss()
+
+                }
+                val alertDialog = builder.create()
+                alertDialog.show()
             }
 
         }
@@ -278,6 +285,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         }
         builder.setNegativeButton("취소") { dialog, _ ->
             dialog.dismiss()
+
         }
         val alertDialog = builder.create()
         alertDialog.show()

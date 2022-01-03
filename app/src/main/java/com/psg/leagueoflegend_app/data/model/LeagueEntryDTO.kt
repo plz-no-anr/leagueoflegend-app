@@ -21,7 +21,6 @@ data class LeagueEntryDTO(
         return "[wins = $wins, freshBlood = $freshBlood, summonerName = $summonerName, leaguePoints = $leaguePoints, losses = $losses, inactive = $inactive, tier = $tier, veteran = $veteran, leagueId = $leagueId, hotStreak = $hotStreak, queueType = $queueType, rank = $rank, summonerId = $summonerId]"
     }
 
-
     data class MiniSeriesDTO(
         val losses: Int? = null,
         val target: Int? = null,

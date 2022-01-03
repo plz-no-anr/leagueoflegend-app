@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.psg.leagueoflegend_app.LoLApp
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.model.SearchEntity
 import com.psg.leagueoflegend_app.data.model.SummonerEntity
@@ -69,6 +70,13 @@ class MainAdapter(var list: List<SummonerEntity> = mutableListOf()):
                             itemView.ll_mini.visibility = View.VISIBLE
                         } else {
                             itemView.ll_mini.visibility = View.INVISIBLE
+                        }
+                        itemView.ll_spectator.setOnClickListener {
+                            if (item.isPlaying){
+                                // 게임중
+                                val json = LoLApp.getContext().assets.open("map.json").reader().readText()
+                                println("제이슨$json")
+                            }
                         }
                     }
                 }

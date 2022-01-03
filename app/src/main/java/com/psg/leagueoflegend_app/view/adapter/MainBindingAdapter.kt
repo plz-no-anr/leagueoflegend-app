@@ -40,6 +40,11 @@ fun miniImage(view: ImageView, int: Int){
     view.setImageResource(int)
 }
 
+@BindingAdapter("playing")
+fun isPlaying(view: ImageView, res: Int){
+    view.setBackgroundResource(res)
+}
+
 fun getProgressDrawable(context: Context): CircularProgressDrawable { //이미지 로딩 표시
     return CircularProgressDrawable(context).apply {
         strokeWidth = 10f

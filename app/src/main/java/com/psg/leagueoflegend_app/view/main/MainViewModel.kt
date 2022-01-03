@@ -75,9 +75,13 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                         apiKey.value?.let {
                             val body = repository.searchSummoner(summoner.name, it).body()
                             val code = repository.searchSummoner(summoner.name, it).code()
+                            println("id는?${body?.id}")
                             if (code == 200 && body != null) {
-                                val res = repository.searchLeague(body.id, it)
-                                val iterator = res.body()?.iterator() ?: iterator { }
+                                val resLeague = repository.searchLeague(body.id, it)
+                                val resSpectator = repository.searchSpectator(body.id, it).body()
+                                val playing = resSpectator?.gameId != null
+                                println("게임중?$playing")
+                                val iterator = resLeague.body()?.iterator() ?: iterator { }
                                 while (iterator.hasNext()) {
                                     val league = iterator.next()
                                     if (league.queueType == "RANKED_SOLO_5x5") {
@@ -102,7 +106,8 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                                     league.rank!!,
                                                     league.wins!!,
                                                     league.losses!!,
-                                                    mini
+                                                    mini,
+                                                    playing
                                                 )
                                             )
                                             println("승급전중")
@@ -127,7 +132,8 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                                     league.rank!!,
                                                     league.wins!!,
                                                     league.losses!!,
-                                                    mini
+                                                    mini,
+                                                    playing
                                                 )
                                             )
                                             println("승급전아님")
@@ -135,6 +141,7 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                         toastEvent("업데이트 성공")
                                     }
                                 }
+
                             } else {
                                 when (code) {
                                     401 -> toastEvent("토큰이 인증되지 않았습니다.")
@@ -155,7 +162,7 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                 )
                                 println("에러")
                             }
-                        }
+                            }
                     }catch (e: Exception){
                         e.printStackTrace()
                     }

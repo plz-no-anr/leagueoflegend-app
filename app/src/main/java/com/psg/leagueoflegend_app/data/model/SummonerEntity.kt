@@ -17,9 +17,9 @@ data class SummonerEntity(
     val rank: String, // 랭크 (I)
     val wins: Int, // 승리
     val losses: Int, // 패배
-    val miniSeries: MiniSeries? // 승급전
+    val miniSeries: MiniSeries?, // 승급전
+    val isPlaying: Boolean,
 ) {
-
     data class MiniSeries(
         var losses: Int,
         var target: Int,
@@ -40,7 +40,7 @@ data class SummonerEntity(
         "GOLD" -> R.drawable.emblem_gold
         "PLATINUM" -> R.drawable.emblem_platinum
         "DIAMOND" -> R.drawable.emblem_diamond
-        "MASTER" -> R.drawable.emblem_grandmaster
+        "MASTER" -> R.drawable.emblem_master
         "GRANDMASTER" -> R.drawable.emblem_grandmaster
         "CHALLENGER" -> R.drawable.emblem_challenger
         else -> R.drawable.lol
@@ -66,6 +66,10 @@ data class SummonerEntity(
         }
         return result
     }
+
+    fun playing() = if (isPlaying) R.color.green_new else R.color.color_red
+
+
 
 
 }

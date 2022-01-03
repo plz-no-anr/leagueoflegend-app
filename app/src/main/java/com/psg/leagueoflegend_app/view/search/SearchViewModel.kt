@@ -72,6 +72,9 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                 if (code == 200 && body != null) {
                     println("코드는?${body.id}")
                     val res = repository.searchLeague(body.id, key)
+                    val resSpectator = repository.searchSpectator(body.id, key).body()
+                    val playing = resSpectator?.gameId != null
+                    println("게임중?$playing")
                     if (res.body()?.size != 0) {
                         val iterator = res.body()?.iterator() ?: iterator { }
                         while (iterator.hasNext()) {
@@ -99,7 +102,8 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                                             league.rank!!,
                                             league.wins!!,
                                             league.losses!!,
-                                            mini
+                                            mini,
+                                            playing
                                         )
                                     )
                                     println("승급전중")
@@ -124,7 +128,8 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                                             league.rank!!,
                                             league.wins!!,
                                             league.losses!!,
-                                            mini
+                                            mini,
+                                            playing
                                         )
                                     )
                                     println("승급전아님")

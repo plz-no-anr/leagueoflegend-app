@@ -5,9 +5,12 @@ import com.psg.leagueoflegend_app.LoLApp
 import com.psg.leagueoflegend_app.data.api.LeagueOfLegendAPI
 import com.psg.leagueoflegend_app.data.db.AppDatabase
 import com.psg.leagueoflegend_app.data.repository.AppRepository
+import com.psg.leagueoflegend_app.utils.CurrentGameInfoTypeConverter
 import com.psg.leagueoflegend_app.utils.MiniSeriesTypeConverter
 import com.psg.leagueoflegend_app.view.main.MainViewModel
 import com.psg.leagueoflegend_app.view.search.SearchViewModel
+import com.psg.leagueoflegend_app.view.spectator.SpectatorViewModel
+import get
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -36,6 +39,7 @@ val appModule = module {
 val viewModelModule = module {
     viewModel { MainViewModel(get()) }
     viewModel { SearchViewModel(get()) }
+    viewModel { SpectatorViewModel(get()) }
 }
 
 val repositoryModule = module {

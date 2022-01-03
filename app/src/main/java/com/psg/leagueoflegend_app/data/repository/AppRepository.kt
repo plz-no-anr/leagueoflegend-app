@@ -14,6 +14,8 @@ class AppRepository constructor(private val dao: LoLDao, private val api: League
 
     suspend fun searchLeague(summonerId:String?, apiKey: String): Response<Set<LeagueEntryDTO>> = api.getLeague(summonerId,apiKey)
 
+    suspend fun searchSpectator(summonerId:String?, apiKey: String): Response<CurrentGameInfo> = api.getSpectator(summonerId,apiKey)
+
 
     // Room Main
     fun getSummoner() = dao.getSummoner()
