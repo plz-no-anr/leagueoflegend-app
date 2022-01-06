@@ -17,38 +17,18 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tv_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="게임모드"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="12dp"
-                android:background="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/tv_map"
-                app:layout_constraintHorizontal_bias="0.533"
-                app:layout_constraintStart_toEndOf="@+id/tv_mode"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/tv_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:gravity="center"
                 android:text="맵"
                 android:textSize="20dp"
-                app:layout_constraintStart_toEndOf="@+id/tv_mode"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
 
             <ImageView
                 android:id="@+id/iv_exit"

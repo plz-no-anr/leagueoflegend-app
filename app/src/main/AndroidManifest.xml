@@ -15,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LeagueOfLegendApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.spectator.SpectatorActivity"></activity>
+        <activity android:name=".view.spectator.SpectatorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.search.SearchActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -24,11 +30,7 @@
             android:name=".view.base.BaseActivity"
             tools:ignore="Instantiatable" />
         <activity android:name=".view.main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

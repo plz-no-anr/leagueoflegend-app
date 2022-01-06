@@ -15,6 +15,7 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding,SpectatorViewMod
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.getList("cube desu")
     }
 
     override fun setDisplay() {
