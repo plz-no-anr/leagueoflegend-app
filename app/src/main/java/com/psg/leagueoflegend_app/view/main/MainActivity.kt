@@ -121,7 +121,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
     @SuppressLint("SetTextI18n")
     override fun setDisplay(){
         binding.slMain.setOnRefreshListener {
-            refresh()
+            refresh(list)
         }
         binding.tvDeleteAll.setOnClickListener {
             viewModel.deleteAll()
@@ -139,6 +139,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         viewModel.summonerList.observe(this,{
             if (it != null){
                 list = it
+                refresh(it)
             } else {
                 println("리스트 null")
             }
@@ -168,11 +169,14 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
 //
 //        }
 
-    private fun refresh(){
-            val refresh = viewModel.refresh(list)
-            if (refresh){
+    private fun refresh(list: List<SummonerEntity>){
+        viewModel.refresh(list)
+        viewModel.isRefresh.observe(this,{
+            if (it){
                 binding.slMain.isRefreshing = false
             }
+        })
+
     }
 
     override fun setRv() {

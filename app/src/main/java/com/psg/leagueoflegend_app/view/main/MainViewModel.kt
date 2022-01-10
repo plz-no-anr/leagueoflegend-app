@@ -17,10 +17,7 @@ import com.psg.leagueoflegend_app.data.repository.AppRepository
 import com.psg.leagueoflegend_app.utils.Constants
 import com.psg.leagueoflegend_app.utils.TimeCheckService
 import com.psg.leagueoflegend_app.view.base.BaseViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.*
 
 class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
 
@@ -34,8 +31,12 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
     private val _apiKey = MutableLiveData<String>()
     val apiKey: LiveData<String> get() = _apiKey
 
+    val isRefresh: LiveData<Boolean> get() = _isRefresh
+    private var _isRefresh = MutableLiveData<Boolean>()
+
     init {
         _apiKey.value = repository.getApikey()
+        _isRefresh.value = false
     }
 
 //    override fun toastEvent(text: String){
@@ -67,7 +68,16 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
         }
     }
 
-    fun refresh(list: List<SummonerEntity>):Boolean {
+    fun refresh(list: List<SummonerEntity>){
+        viewModelScope.launch {
+            withContext(Dispatchers.Default){
+                refreshData(list)
+            }
+            _isRefresh.value = true
+        }
+    }
+
+    private fun refreshData(list: List<SummonerEntity>) {
         if (list.isNotEmpty()) {
             for (summoner in list)
                 CoroutineScope(Dispatchers.IO).launch {
@@ -138,16 +148,30 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                             )
                                             println("승급전아님")
                                         }
-                                        toastEvent("업데이트 성공")
+//                                        toastEvent("업데이트 성공")
+
                                     }
+                                    return@launch
                                 }
 
                             } else {
                                 when (code) {
-                                    401 -> toastEvent("토큰이 인증되지 않았습니다.")
-                                    403 -> toastEvent("토큰이 만료되었습니다.")
-                                    404 -> toastEvent("존재하지 않는 아이디입니다.")
-                                    429 -> println("너무 많은 요청")
+                                    401 -> {
+                                        toastEvent("토큰이 인증되지 않았습니다.")
+                                        return@launch
+                                    }
+                                    403 -> {
+                                        toastEvent("토큰이 만료되었습니다.")
+                                        return@launch
+                                    }
+                                    404 -> {
+                                        toastEvent("존재하지 않는 아이디입니다.")
+                                        return@launch
+                                    }
+                                    429 -> {
+                                        println("너무 많은 요청")
+                                        return@launch
+                                    }
                                 }
                                 println(
                                     "리스폰스에러바디:${
@@ -156,7 +180,7 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                     }"
                                 )
                                 println(
-                                    "에러코드:${
+                                    "코드:${
                                         repository.searchSummoner(summoner.name, it).code()
                                     }"
                                 )
@@ -169,7 +193,6 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
 
                 }
         }
-        return true
     }
 
     fun deleteSummoner(summonerEntity: SummonerEntity){
