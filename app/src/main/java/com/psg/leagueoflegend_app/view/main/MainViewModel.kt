@@ -14,6 +14,7 @@ import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.model.ProfileEntity
 import com.psg.leagueoflegend_app.data.model.SummonerEntity
 import com.psg.leagueoflegend_app.data.repository.AppRepository
+import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.utils.Constants
 import com.psg.leagueoflegend_app.utils.TimeCheckService
 import com.psg.leagueoflegend_app.view.base.BaseViewModel
@@ -85,17 +86,17 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                         apiKey.value?.let {
                             val body = repository.searchSummoner(summoner.name, it).body()
                             val code = repository.searchSummoner(summoner.name, it).code()
-                            println("id는?${body?.id}")
+                            AppLogger.p("id는?${body?.id}")
                             if (code == 200 && body != null) {
                                 val resLeague = repository.searchLeague(body.id, it)
                                 val resSpectator = repository.searchSpectator(body.id, it).body()
                                 val playing = resSpectator?.gameId != null
-                                println("게임중?$playing")
+                                AppLogger.p("게임중?$playing")
                                 val iterator = resLeague.body()?.iterator() ?: iterator { }
                                 while (iterator.hasNext()) {
                                     val league = iterator.next()
                                     if (league.queueType == "RANKED_SOLO_5x5") {
-                                        println("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
+                                        AppLogger.p("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
                                         if (league.miniSeries != null) {
                                             val mini = SummonerEntity.MiniSeries(
                                                 league.miniSeries.losses!!,
@@ -120,8 +121,8 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                                     playing
                                                 )
                                             )
-                                            println("승급전중")
-                                            println(
+                                            AppLogger.p("승급전중")
+                                            AppLogger.p(
                                                 "승급전:${
                                                     league.miniSeries.progress.replace("L", "패")
                                                         .replace("W", "승")
@@ -146,7 +147,7 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                                     playing
                                                 )
                                             )
-                                            println("승급전아님")
+                                            AppLogger.p("승급전아님")
                                         }
 //                                        toastEvent("업데이트 성공")
 
@@ -169,22 +170,22 @@ class MainViewModel(private val repository: AppRepository) : BaseViewModel() {
                                         return@launch
                                     }
                                     429 -> {
-                                        println("너무 많은 요청")
+                                        AppLogger.p("너무 많은 요청")
                                         return@launch
                                     }
                                 }
-                                println(
+                                AppLogger.p(
                                     "리스폰스에러바디:${
                                         repository.searchSummoner(summoner.name, it).errorBody()
                                             ?.string()
                                     }"
                                 )
-                                println(
+                                AppLogger.p(
                                     "코드:${
                                         repository.searchSummoner(summoner.name, it).code()
                                     }"
                                 )
-                                println("에러")
+                                AppLogger.p("에러")
                             }
                             }
                     }catch (e: Exception){

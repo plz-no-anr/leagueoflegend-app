@@ -12,7 +12,7 @@ class TimeCheckService(millisInFuture: Long, countDownInterval: Long) : CountDow
     }
     override fun onTick(millisUntilFinished: Long) {
         isRunning = true
-        Log.d("카운트", time++.toString())
+        AppLogger.d("카운트", time++.toString())
     }
 
     override fun onFinish() {

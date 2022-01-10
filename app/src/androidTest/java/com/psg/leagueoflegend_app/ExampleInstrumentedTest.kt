@@ -2,6 +2,7 @@ package com.psg.leagueoflegend_app
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.psg.leagueoflegend_app.utils.AppLogger
 import org.json.JSONArray
 
 import org.junit.Test
@@ -27,7 +28,7 @@ class ExampleInstrumentedTest {
         val mapString = LoLApp.getContext().assets.open("map.json").reader().readText()
         val mapArray = JSONArray(mapString)
         for (i in 0 until mapArray.length()){
-            println("제이슨 어레이$mapArray.getJSONObject(i).getJSONArray(\"data\")")
+            AppLogger.p("제이슨 어레이$mapArray.getJSONObject(i).getJSONArray(\"data\")")
         }
     }
 }

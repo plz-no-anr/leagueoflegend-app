@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.model.SearchEntity
 import com.psg.leagueoflegend_app.databinding.ActivitySearchBinding
+import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.view.adapter.SearchAdapter
 import com.psg.leagueoflegend_app.view.base.BaseActivity
 import com.psg.leagueoflegend_app.view.base.BaseViewModel
@@ -50,7 +51,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
 
     override fun setDisplay() {
         binding.ivBackspace.setOnClickListener {
-            println("뒤로가기클릭")
+            AppLogger.p("뒤로가기클릭")
             finish()
         }
 //        binding.etSearch.setOnKeyListener { _, keyCode, _ ->
@@ -79,9 +80,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
                 adapter.setData(it)
                 binding.rvSearchSummoner.scrollToPosition(0) // 리사이클러뷰 아이템 추가시 위쪽으로 이동
                 binding.etSearch.text = null
-                println("널이 아님")
+                AppLogger.p("널이 아님")
             } else {
-                println("널임")
+                AppLogger.p("널임")
             }
         })
 
@@ -89,7 +90,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
         adapter.setOnItemClickListener(object : SearchAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: SearchEntity, pos: Int) {
                 viewModel.deleteSearch(data)
-                println("아이템삭제")
+                AppLogger.p("아이템삭제")
                 makeToast("삭제 성공")
             }
 

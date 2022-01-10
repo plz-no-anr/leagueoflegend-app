@@ -17,7 +17,7 @@ class AppLogger {
             }
         }
 
-        fun println(msg:String){
+        fun p(msg:String){
             if (Constants.DEBUG){
                 println(msg)
             }

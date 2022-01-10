@@ -26,7 +26,7 @@ class ExampleUnitTest {
         val mapString = getContext().assets.open("map.json").reader().readText()
         val mapArray = JSONArray(mapString)
         for (i in 0 until mapArray.length()){
-            println("제이슨 어레이$mapArray.getJSONObject(i).getJSONArray(\"data\")")
+            AppLogger.p("제이슨 어레이$mapArray.getJSONObject(i).getJSONArray(\"data\")")
         }
     }
 }

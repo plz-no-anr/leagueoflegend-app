@@ -30,6 +30,7 @@ import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.api.RetrofitClient
 import com.psg.leagueoflegend_app.data.model.*
 import com.psg.leagueoflegend_app.databinding.ActivityMainBinding
+import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.utils.Constants
 import com.psg.leagueoflegend_app.utils.NetworkStatus
 import com.psg.leagueoflegend_app.view.adapter.MainAdapter
@@ -81,7 +82,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                     binding.nvMain.tv_name.text = profile.name
                     binding.nvMain.tv_level.text = "LV: ${profile.level}"
                     viewModel.bindImage(binding.nvMain.iv_image,profile.icon)
-                    println("아이콘:${profile.icon}")
+                    AppLogger.p("아이콘:${profile.icon}")
                 } else {
                     binding.nvMain.tv_name.text = "이름"
                     binding.nvMain.tv_level.text = "LV: "
@@ -141,7 +142,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                 list = it
                 refresh(it)
             } else {
-                println("리스트 null")
+                AppLogger.p("리스트 null")
             }
         })
 
@@ -149,7 +150,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
             profile = if (it != null){
                 it
             } else {
-                println("프로필 null")
+                AppLogger.p("프로필 null")
                 ProfileEntity("","","")
             }
 
@@ -159,7 +160,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
 //    private fun setLock(): CountDownTimer =
 //          object : CountDownTimer(0,30000){
 //            override fun onTick(millisUntilFinished: Long) {
-//                println("타이머 동작중")
+//                AppLogger.p("타이머 동작중")
 //                refreshLock = true
 //            }
 //
@@ -190,9 +191,9 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         viewModel.summonerList.observe(this,{
             if (it != null){
                 adapter.setData(it)
-                println("Main: null이 아님")
+                AppLogger.p("Main: null이 아님")
             }else{
-                println("Main: db값 null")
+                AppLogger.p("Main: db값 null")
             }
         })
 
@@ -201,12 +202,12 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                 when (v.id){
                     R.id.iv_delete ->{
                         viewModel.deleteSummoner(data)
-                        println("아이템삭제")
+                        AppLogger.p("아이템삭제")
                         makeToast("삭제 성공")
                     }
                     R.id.iv_addProfile ->{
                         viewModel.insertProfile(ProfileEntity(data.name,data.level,data.icon))
-                        println("프로필변경")
+                        AppLogger.p("프로필변경")
                         makeToast("프로필 변경 성공")
                     }
                     R.id.ll_spectator ->{
@@ -214,7 +215,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                             val intent = Intent(this@MainActivity,SpectatorActivity::class.java)
                             intent.putExtra("name",data.name)
                             startActivity(intent)
-                            println("관전액티비티 시작")
+                            AppLogger.p("관전액티비티 시작")
                         } else {
                             makeToast("게임중이 아닙니다.")
                         }
@@ -232,22 +233,22 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.item_info -> {
-                println("정보버튼")
+                AppLogger.p("정보버튼")
                 true
             }
             R.id.item_key -> {
-                println("키버튼")
+                AppLogger.p("키버튼")
                 setKeyDialog()
                 true // 드로어 레이아웃 추가
             }
             R.id.item_delete -> {
-                println("삭제버튼")
+                AppLogger.p("삭제버튼")
                 viewModel.deleteProfile()
                 binding.dlMain.closeDrawer(Gravity.RIGHT)
                 true // 드로어 레이아웃 추가
             }
             else -> {
-                println("else")
+                AppLogger.p("else")
                 true
             }
         }
@@ -261,7 +262,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         params?.width = 1000
         params?.height = 1300
 
-        println("api키?${LoLApp.pref.getApikey()}")
+        AppLogger.p("api키?${LoLApp.pref.getApikey()}")
         dialog.tv_key.text = LoLApp.pref.getApikey()
 
         dialog.show()

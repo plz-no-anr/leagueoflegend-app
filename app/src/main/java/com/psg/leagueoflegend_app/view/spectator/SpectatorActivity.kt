@@ -16,6 +16,7 @@ import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.model.Rune
 import com.psg.leagueoflegend_app.data.model.SpectatorInfo
 import com.psg.leagueoflegend_app.databinding.ActivitySpectatorBinding
+import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.view.adapter.SpectatorAdapter
 import com.psg.leagueoflegend_app.view.adapter.getProgressDrawable
 import com.psg.leagueoflegend_app.view.base.BaseActivity
@@ -43,11 +44,11 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding,SpectatorViewMod
         viewModel.isLoading.observe(this,{
             if (it){
                 progressOff()
-                println("로딩끝")
+                AppLogger.p("로딩끝")
 
             } else {
                 progressOn()
-                println("로딩중")
+                AppLogger.p("로딩중")
             }
         })
     }
@@ -102,7 +103,7 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding,SpectatorViewMod
                 val list1 = mutableListOf<String>()
                 val list2 = mutableListOf<String>()
 
-                println("밴챔프 null x ${it.map}")
+                AppLogger.p("밴챔프 null x ${it.map}")
                 binding.tvMap.text = it.map
 
                     for (i in it.banChamp.indices) {
@@ -125,14 +126,14 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding,SpectatorViewMod
                     loadImage(binding.ivRedBan5, list2[4])
                 }
             }else{
-                println("밴챔프 null")
+                AppLogger.p("밴챔프 null")
             }
         })
 
         viewModel.spectatorListB.observe(this,{
             if (it != null){
                 for (x in it){
-                    println("블루팀:${x.champName}")
+                    AppLogger.p("블루팀:${x.champName}")
                 }
             }
         })
@@ -140,7 +141,7 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding,SpectatorViewMod
         viewModel.spectatorListR.observe(this,{
             if (it != null){
                 for (x in it){
-                    println("레드팀:${x.champName}")
+                    AppLogger.p("레드팀:${x.champName}")
                 }
             }
         })
@@ -162,9 +163,9 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding,SpectatorViewMod
                 if (it.isNotEmpty()){
                     adapterB.setData(it)
                 }
-                println("size 0")
+                AppLogger.p("size 0")
             }else{
-                println("null")
+                AppLogger.p("null")
             }
         })
 
@@ -173,9 +174,9 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding,SpectatorViewMod
                 if (it.isNotEmpty()){
                     adapterR.setData(it)
                 }
-                println("size 0")
+                AppLogger.p("size 0")
             }else{
-                println("null")
+                AppLogger.p("null")
             }
         })
 

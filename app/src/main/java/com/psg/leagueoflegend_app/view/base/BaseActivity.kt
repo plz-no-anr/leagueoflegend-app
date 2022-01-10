@@ -22,7 +22,7 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppLogger.i(TAG,"onCreate")
-        Log.i(TAG,"onCreate")
+//        Log.i(TAG,"onCreate")
         binding = DataBindingUtil.setContentView(this, res)
     }
 
@@ -77,7 +77,7 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
     override fun onStop() {
         super.onStop()
         AppLogger.i(TAG,"onStop")
-        Log.i(TAG,"onStop")
+//        Log.i(TAG,"onStop")
     }
 
     override fun onDestroy() {

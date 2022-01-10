@@ -9,6 +9,7 @@ import com.psg.leagueoflegend_app.data.model.Rune
 import com.psg.leagueoflegend_app.data.model.Spectator
 import com.psg.leagueoflegend_app.data.model.SpectatorInfo
 import com.psg.leagueoflegend_app.data.repository.AppRepository
+import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.view.base.BaseViewModel
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -88,12 +89,12 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                                 404 -> toastEvent("존재하지 않는 아이디입니다.")
                                 else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
                             }
-                            println(
+                            AppLogger.p(
                                 "리스폰스에러바디:${
                                     repository.searchSummoner(name, key).errorBody()?.string()
                                 }"
                             )
-                            println("에러코드:${repository.searchSummoner(name, key).code()}")
+                            AppLogger.p("에러코드:${repository.searchSummoner(name, key).code()}")
                         }
                 }
             }catch (e: Exception){
@@ -114,7 +115,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                                 if (res != null) {
                                     for (i in res.participants) {
                                         if (longToTeam(i.teamId) == "블루"){
-                                            println("블루팀 추가")
+                                            AppLogger.p("블루팀 추가")
                                             list.add(SpectatorInfo(
                                                 i.summonerName,
                                                 jsonToChampName(i.championId),
@@ -141,12 +142,12 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                                 404 -> toastEvent("존재하지 않는 아이디입니다.")
                                 else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
                             }
-                            println(
+                            AppLogger.p(
                                 "리스폰스에러바디:${
                                     repository.searchSummoner(name, key).errorBody()?.string()
                                 }"
                             )
-                            println("에러코드:${repository.searchSummoner(name, key).code()}")
+                            AppLogger.p("에러코드:${repository.searchSummoner(name, key).code()}")
                         }
                     }
                 }catch (e: Exception){
@@ -169,7 +170,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                         if (res != null) {
                             for (i in res.participants) {
                                 if (longToTeam(i.teamId) == "레드"){
-                                    println("레드팀 추가")
+                                    AppLogger.p("레드팀 추가")
                                     list.add(SpectatorInfo(
                                         i.summonerName,
                                         jsonToChampName(i.championId),
@@ -197,12 +198,12 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                         404 -> toastEvent("존재하지 않는 아이디입니다.")
                         else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
                     }
-                    println(
+                    AppLogger.p(
                         "리스폰스에러바디:${
                             repository.searchSummoner(name, key).errorBody()?.string()
                         }"
                     )
-                    println("에러코드:${repository.searchSummoner(name, key).code()}")
+                    AppLogger.p("에러코드:${repository.searchSummoner(name, key).code()}")
                 }
             }
         }catch (e: Exception){
@@ -219,7 +220,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         val mapString = LoLApp.getContext().assets.open("map.json").reader().readText()
         val mapArray = JSONArray(mapString)
         for (i in 0 until mapArray.length()){
-                println("맵:${mapArray.getJSONObject(i).getJSONObject("data").getJSONObject(mapId.toString()).getString("MapName")}")
+                AppLogger.p("맵:${mapArray.getJSONObject(i).getJSONObject("data").getJSONObject(mapId.toString()).getString("MapName")}")
             mapName = mapArray.getJSONObject(i).getJSONObject("data").getJSONObject(mapId.toString()).getString("MapName")
         }
         return mapName
@@ -234,7 +235,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         val champString = LoLApp.getContext().assets.open("champion.json").reader().readText()
         val champArr = JSONArray(champString)
         for (i in 0 until champArr.length()){
-//            println("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
+//            AppLogger.p("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
             val name = champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getJSONObject("image").getString("full")
             champName = "http://ddragon.leagueoflegends.com/cdn/12.1.1/img/champion/$name"
         }
@@ -250,7 +251,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         val champString = LoLApp.getContext().assets.open("champion.json").reader().readText()
         val champArr = JSONArray(champString)
         for (i in 0 until champArr.length()){
-//            println("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
+//            AppLogger.p("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
             champName = champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")
         }
         return champName
@@ -263,7 +264,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         val runeArray = JSONArray(runeString)
         for (i in 0 until  runeArray.length()){
             if (runeArray.getJSONObject(i).getString("id") == perkStyle.toString()) {
-                println("룬:${runeArray.getJSONObject(i).getString("icon")}")
+                AppLogger.p("룬:${runeArray.getJSONObject(i).getString("icon")}")
                 style = Rune(runeArray.getJSONObject(i).getString("name"),runeArray.getJSONObject(i).getString("icon"))
             }
         }
@@ -280,7 +281,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                             val rArr = arr.getJSONObject(0).getJSONArray("runes")
                             for (y in 0 until  rArr.length()){
                                 if (rArr.getJSONObject(y).getString("id") == perks.toString()){
-                                    println("룬2:${rArr.getJSONObject(y).getString("icon")}")
+                                    AppLogger.p("룬2:${rArr.getJSONObject(y).getString("icon")}")
                                     runeName = rArr.getJSONObject(y).getString("icon")
                                 }
                             }
@@ -305,7 +306,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                             val rArr = arr.getJSONObject(z).getJSONArray("runes")
                             for (x in 0 until rArr.length()){
                                 if (rArr.getJSONObject(x).getString("id") == perks[i].toString()){
-                                    println("룬3:${rArr.getJSONObject(x).getString("icon")}")
+                                    AppLogger.p("룬3:${rArr.getJSONObject(x).getString("icon")}")
                                     runeNames[i] = Rune(rArr.getJSONObject(x).getString("name"),rArr.getJSONObject(x).getString("icon"))
                                 }
 
@@ -323,7 +324,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                                 val rArr = arr.getJSONObject(z).getJSONArray("runes")
                                 for (x in 0 until rArr.length()){
                                     if (rArr.getJSONObject(x).getString("id") == perks[i].toString()){
-                                        println("룬3-1:${rArr.getJSONObject(x).getString("icon")}")
+                                        AppLogger.p("룬3-1:${rArr.getJSONObject(x).getString("icon")}")
                                         runeNames[i] = Rune(rArr.getJSONObject(x).getString("name"),rArr.getJSONObject(x).getString("icon"))
                                     }
 
@@ -343,7 +344,7 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         val spellString = LoLApp.getContext().assets.open("summoner.json").reader().readText()
         val spellArray = JSONArray(spellString)
         for (i in 0 until spellArray.length()){
-            println("스펠:${spellArray.getJSONObject(i).getJSONObject("data").getJSONObject(spellId.toString()).getJSONObject("image").getString("full")}")
+            AppLogger.p("스펠:${spellArray.getJSONObject(i).getJSONObject("data").getJSONObject(spellId.toString()).getJSONObject("image").getString("full")}")
             val name = spellArray.getJSONObject(i).getJSONObject("data").getJSONObject(spellId.toString()).getJSONObject("image").getString("full")
             spellName = "http://ddragon.leagueoflegends.com/cdn/12.1.1/img/spell/$name"
         }

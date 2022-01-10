@@ -10,6 +10,7 @@ import com.psg.leagueoflegend_app.data.model.LeagueEntryDTO
 import com.psg.leagueoflegend_app.data.model.SearchEntity
 import com.psg.leagueoflegend_app.data.model.SummonerEntity
 import com.psg.leagueoflegend_app.data.repository.AppRepository
+import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.utils.Constants
 import com.psg.leagueoflegend_app.view.base.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -54,7 +55,7 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                 }
 
             } else {
-                println("텍스트가 null")
+                AppLogger.p("텍스트가 null")
                 toastEvent("아이디를 입력해주세요.")
             }
         } catch (e: Exception) {
@@ -70,19 +71,19 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                 val code = repository.searchSummoner(name, key).code()
 
                 if (code == 200 && body != null) {
-                    println("코드는?${body.id}")
+                    AppLogger.p("코드는?${body.id}")
                     val res = repository.searchLeague(body.id, key)
                     val resSpectator = repository.searchSpectator(body.id, key).body()
                     val playing = resSpectator?.gameId != null
-                    println("게임중?$playing")
+                    AppLogger.p("게임중?$playing")
                     if (res.body()?.size != 0) {
                         val iterator = res.body()?.iterator() ?: iterator { }
                         while (iterator.hasNext()) {
                             val league = iterator.next()
                             if (league.queueType == "RANKED_SOLO_5x5") {
-                                println("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
+                                AppLogger.p("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
                                 if (league.miniSeries != null) {
-                                    println("아이콘id:${body.profileIconId}")
+                                    AppLogger.p("아이콘id:${body.profileIconId}")
                                     val mini = SummonerEntity.MiniSeries(
                                         league.miniSeries.losses!!,
                                         league.miniSeries.target!!,
@@ -106,8 +107,8 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                                             playing
                                         )
                                     )
-                                    println("승급전중")
-                                    println(
+                                    AppLogger.p("승급전중")
+                                    AppLogger.p(
                                         "승급전:${
                                             league.miniSeries.progress.replace("L", "패")
                                                 .replace("W", "승")
@@ -132,14 +133,14 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                                             playing
                                         )
                                     )
-                                    println("승급전아님")
+                                    AppLogger.p("승급전아님")
 
                                 }
                                 toastEvent("등록성공")
                                 insertSearch(SearchEntity(league.summonerName, date))
                                 return@launch
                             } else {
-                                println("솔로랭크가 아님")
+                                AppLogger.p("솔로랭크가 아님")
                                 toastEvent("이번 시즌 솔로랭크 전적이 없거나\n 배치가 끝나지 않았습니다.")
                             }
                         }
@@ -154,13 +155,13 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                         404 -> toastEvent("존재하지 않는 아이디입니다.")
                         else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
                     }
-                    println(
+                    AppLogger.p(
                         "리스폰스에러바디:${
                             repository.searchSummoner(name, key).errorBody()?.string()
                         }"
                     )
-                    println("에러코드:${repository.searchSummoner(name, key).code()}")
-                    println("에러")
+                    AppLogger.p("에러코드:${repository.searchSummoner(name, key).code()}")
+                    AppLogger.p("에러")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
