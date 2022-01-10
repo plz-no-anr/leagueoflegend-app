@@ -2,72 +2,133 @@ package com.psg.leagueoflegend_app.view.spectator
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.psg.leagueoflegend_app.LoLApp
+import com.psg.leagueoflegend_app.data.model.BanChamp
+import com.psg.leagueoflegend_app.data.model.Rune
 import com.psg.leagueoflegend_app.data.model.Spectator
 import com.psg.leagueoflegend_app.data.model.SpectatorInfo
 import com.psg.leagueoflegend_app.data.repository.AppRepository
 import com.psg.leagueoflegend_app.view.base.BaseViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.json.JSONArray
 
 class SpectatorViewModel(private val repository: AppRepository): BaseViewModel() {
 
-    val spectatorList: LiveData<List<SpectatorInfo>> get() = _spectatorList
-    private var _spectatorList = MutableLiveData<List<SpectatorInfo>>()
+    val spectatorListB: LiveData<List<SpectatorInfo>> get() = _spectatorListB
+    private var _spectatorListB = MutableLiveData<List<SpectatorInfo>>()
+
+    val spectatorListR: LiveData<List<SpectatorInfo>> get() = _spectatorListR
+    private var _spectatorListR = MutableLiveData<List<SpectatorInfo>>()
+
+    val spectator: LiveData<Spectator> get() = _spectator
+    private var _spectator = MutableLiveData<Spectator>()
 
     private val _apiKey = MutableLiveData<String>()
-    val apiKey: LiveData<String> get() = _apiKey
-    val keyy = "RGAPI-32904622-1b3a-48f8-97c2-7e12615faf40"
+    private val apiKey: LiveData<String> get() = _apiKey
+
+    val isLoading: LiveData<Boolean> get() = _isLoading
+    private var _isLoading = MutableLiveData<Boolean>()
 
         init {
             _apiKey.value = repository.getApikey()
-//            _spectatorList.value = getList()
+            _isLoading.value = false
         }
 
-        fun getList(name: String): List<Spectator> {
-            val list = mutableListOf<Spectator>()
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    apiKey.value?.let { key ->
-                        val body = repository.searchSummoner(name,keyy).body()
-                        val code = repository.searchSummoner(name, keyy).code()
+    suspend fun setData(name: String){
+        var spectator: Spectator
+        var spectatorListB: List<SpectatorInfo>
+        var spectatorListR: List<SpectatorInfo>
+        viewModelScope.launch {
+            withContext(Dispatchers.Default){
+                spectator = getSpectator(name)
+                spectatorListB = getListB(name)
+                spectatorListR = getListR(name)
+            }
+            _isLoading.value = true
+            _spectator.value = spectator
+            _spectatorListB.value = spectatorListB
+            _spectatorListR.value = spectatorListR
+
+        }
+    }
+
+    private suspend fun getSpectator(name: String): Spectator {
+        var spectator = Spectator("", mutableListOf())
+        val list = mutableListOf<BanChamp>()
+            try {
+                apiKey.value?.let { key ->
+                        val body = repository.searchSummoner(name, key).body()
+                        val code = repository.searchSummoner(name, key).code()
                         if (code == 200) {
                             body?.id.let {
-                                val res = repository.searchSpectator(it, keyy).body()
+                                val res = repository.searchSpectator(it, key).body()
                                 if (res != null) {
-                                    jsonToMap(res.mapId)
 
-                                    for (x in res.bannedChampions){
-//                                        println("밴:$x")
-//                                        println("밴한id:${x.championId}"
-                                        println("밴한챔프:${jsonToChamp(x.championId)}")
-                                    }
-                                    for (i in res.participants) {
-                                        println("픽한얘:${i.summonerName}")
-                                        println("픽한챔프:${jsonToChamp(i.championId)}")
-                                        jsonToSpell(i.spell1Id)
-                                        jsonToSpell(i.spell2Id)
-//                                        jsonToRuneStyle(i.perks.perkStyle)
-//                                        jsonToRuneStyle(i.perks.perkSubStyle)
-
-                                        for (x in jsonToRunes(i.perks.perkStyle,i.perks.perkSubStyle,i.perks.perkIds)){
-                                            println("룬$x")
-                                        }
+                                    for (x in res.bannedChampions) {
                                         list.add(
-                                            Spectator(
-                                                res.mapId,
-                                                res.gameMode,
-                                                res.gameType,
-                                                i.teamId,
-                                                i.spell1Id,
-                                                i.spell2Id,
-                                                i.championId,
-                                                i.summonerName,
-                                                i.perks
+                                            BanChamp(
+                                                longToTeam(x.teamId),
+                                                jsonToChampPath(x.championId)
                                             )
                                         )
+                                    }
+                                    spectator = Spectator(
+                                        jsonToMap(res.mapId),
+                                        list
+                                    )
+
+                                }
+                            }
+
+                        } else {
+                            when (code) {
+                                401 -> toastEvent("토큰이 인증되지 않았습니다.")
+                                403 -> toastEvent("토큰이 만료되었습니다.")
+                                404 -> toastEvent("존재하지 않는 아이디입니다.")
+                                else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
+                            }
+                            println(
+                                "리스폰스에러바디:${
+                                    repository.searchSummoner(name, key).errorBody()?.string()
+                                }"
+                            )
+                            println("에러코드:${repository.searchSummoner(name, key).code()}")
+                        }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        return spectator
+    }
+
+        private suspend fun getListB(name: String): List<SpectatorInfo> {
+            val list = mutableListOf<SpectatorInfo>()
+                try {
+                    apiKey.value?.let { key ->
+                        val body = repository.searchSummoner(name,key).body()
+                        val code = repository.searchSummoner(name, key).code()
+                        if (code == 200) {
+                            body?.id.let {
+                                val res = repository.searchSpectator(it, key).body()
+                                if (res != null) {
+                                    for (i in res.participants) {
+                                        if (longToTeam(i.teamId) == "블루"){
+                                            println("블루팀 추가")
+                                            list.add(SpectatorInfo(
+                                                i.summonerName,
+                                                jsonToChampName(i.championId),
+                                                jsonToChampPath(i.championId),
+                                                longToTeam(i.teamId),
+                                                jsonToSpell(i.spell1Id),
+                                                jsonToSpell(i.spell2Id),
+                                                jsonToRuneStyle(i.perks.perkStyle),
+                                                jsonToRuneStyle(i.perks.perkSubStyle),
+                                                jsonToMainRunes(i.perks.perkStyle,i.perks.perkIds[0]),
+                                                jsonToRunes(i.perks.perkStyle,i.perks.perkSubStyle,i.perks.perkIds),
+                                            ))
+                                        }
+
                                     }
 
                                 }
@@ -82,21 +143,73 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                             }
                             println(
                                 "리스폰스에러바디:${
-                                    repository.searchSummoner(name, keyy).errorBody()?.string()
+                                    repository.searchSummoner(name, key).errorBody()?.string()
                                 }"
                             )
-                            println("에러코드:${repository.searchSummoner(name, keyy).code()}")
+                            println("에러코드:${repository.searchSummoner(name, key).code()}")
                         }
                     }
                 }catch (e: Exception){
                     e.printStackTrace()
                 }
-            }
             return list
         }
 
 
 
+    private suspend fun getListR(name: String): List<SpectatorInfo> {
+        val list = mutableListOf<SpectatorInfo>()
+        try {
+            apiKey.value?.let { key ->
+                val body = repository.searchSummoner(name,key).body()
+                val code = repository.searchSummoner(name, key).code()
+                if (code == 200) {
+                    body?.id.let {
+                        val res = repository.searchSpectator(it, key).body()
+                        if (res != null) {
+                            for (i in res.participants) {
+                                if (longToTeam(i.teamId) == "레드"){
+                                    println("레드팀 추가")
+                                    list.add(SpectatorInfo(
+                                        i.summonerName,
+                                        jsonToChampName(i.championId),
+                                        jsonToChampPath(i.championId),
+                                        longToTeam(i.teamId),
+                                        jsonToSpell(i.spell1Id),
+                                        jsonToSpell(i.spell2Id),
+                                        jsonToRuneStyle(i.perks.perkStyle),
+                                        jsonToRuneStyle(i.perks.perkSubStyle),
+                                        jsonToMainRunes(i.perks.perkStyle,i.perks.perkIds[0]),
+                                        jsonToRunes(i.perks.perkStyle,i.perks.perkSubStyle,i.perks.perkIds),
+                                    ))
+                                }
+
+
+                            }
+
+                        }
+                    }
+
+                } else {
+                    when (code) {
+                        401 -> toastEvent("토큰이 인증되지 않았습니다.")
+                        403 -> toastEvent("토큰이 만료되었습니다.")
+                        404 -> toastEvent("존재하지 않는 아이디입니다.")
+                        else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
+                    }
+                    println(
+                        "리스폰스에러바디:${
+                            repository.searchSummoner(name, key).errorBody()?.string()
+                        }"
+                    )
+                    println("에러코드:${repository.searchSummoner(name, key).code()}")
+                }
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+        return list
+    }
 
 
 
@@ -112,7 +225,23 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         return mapName
     }
 
-    private fun jsonToChamp(champId:Long):String{
+    private fun jsonToChampPath(champId:Long):String{
+        var champName = ""
+        if (champId == (-1).toLong()){
+            champName = "NoBan"
+            return champName
+        }
+        val champString = LoLApp.getContext().assets.open("champion.json").reader().readText()
+        val champArr = JSONArray(champString)
+        for (i in 0 until champArr.length()){
+//            println("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
+            val name = champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getJSONObject("image").getString("full")
+            champName = "http://ddragon.leagueoflegends.com/cdn/12.1.1/img/champion/$name"
+        }
+        return champName
+    }
+
+    private fun jsonToChampName(champId:Long):String{
         var champName = ""
         if (champId == (-1).toLong()){
             champName = "NoBan"
@@ -127,22 +256,44 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         return champName
     }
 
-    private fun jsonToRuneStyle(perkStyle:Long){
-        var main = ""
-        var sub = ""
-        var runeName = ""
+    private fun jsonToRuneStyle(perkStyle:Long):Rune{
+        var style = Rune("","")
 
         val runeString = LoLApp.getContext().assets.open("runesReforged.json").reader().readText()
         val runeArray = JSONArray(runeString)
         for (i in 0 until  runeArray.length()){
             if (runeArray.getJSONObject(i).getString("id") == perkStyle.toString()) {
-                println("룬:${runeArray.getJSONObject(i).getString("name")}")
+                println("룬:${runeArray.getJSONObject(i).getString("icon")}")
+                style = Rune(runeArray.getJSONObject(i).getString("name"),runeArray.getJSONObject(i).getString("icon"))
             }
         }
+        return style
     }
 
-    private fun jsonToRunes(perkStyle:Long,subStyle:Long, perks:List<Long>): List<String> {
-        val runeNames = MutableList(6){""}
+    private fun jsonToMainRunes(perkStyle:Long, perks:Long): String {
+        var runeName = ""
+        val runeString = LoLApp.getContext().assets.open("runesReforged.json").reader().readText()
+        val runeArray = JSONArray(runeString)
+                for (j in 0 until runeArray.length()) {
+                    if (runeArray.getJSONObject(j).getString("id") == perkStyle.toString()) {
+                        val arr = runeArray.getJSONObject(j).getJSONArray("slots")
+                            val rArr = arr.getJSONObject(0).getJSONArray("runes")
+                            for (y in 0 until  rArr.length()){
+                                if (rArr.getJSONObject(y).getString("id") == perks.toString()){
+                                    println("룬2:${rArr.getJSONObject(y).getString("icon")}")
+                                    runeName = rArr.getJSONObject(y).getString("icon")
+                                }
+                            }
+
+
+
+                    }
+                }
+        return runeName
+    }
+
+    private fun jsonToRunes(perkStyle:Long,subStyle:Long, perks:List<Long>): List<Rune> {
+        val runeNames = MutableList(6){Rune("","")}
         val runeString = LoLApp.getContext().assets.open("runesReforged.json").reader().readText()
         val runeArray = JSONArray(runeString)
         for (i in perks.indices){
@@ -154,8 +305,8 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                             val rArr = arr.getJSONObject(z).getJSONArray("runes")
                             for (x in 0 until rArr.length()){
                                 if (rArr.getJSONObject(x).getString("id") == perks[i].toString()){
-//                                    println("룬:${rArr.getJSONObject(x).getString("name")}")
-                                    runeNames[i] = rArr.getJSONObject(x).getString("name")
+                                    println("룬3:${rArr.getJSONObject(x).getString("icon")}")
+                                    runeNames[i] = Rune(rArr.getJSONObject(x).getString("name"),rArr.getJSONObject(x).getString("icon"))
                                 }
 
                             }
@@ -172,8 +323,8 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
                                 val rArr = arr.getJSONObject(z).getJSONArray("runes")
                                 for (x in 0 until rArr.length()){
                                     if (rArr.getJSONObject(x).getString("id") == perks[i].toString()){
-//                                        println("보조룬:${rArr.getJSONObject(x).getString("name")}")
-                                        runeNames[i] = rArr.getJSONObject(x).getString("name")
+                                        println("룬3-1:${rArr.getJSONObject(x).getString("icon")}")
+                                        runeNames[i] = Rune(rArr.getJSONObject(x).getString("name"),rArr.getJSONObject(x).getString("icon"))
                                     }
 
                                 }
@@ -192,11 +343,14 @@ class SpectatorViewModel(private val repository: AppRepository): BaseViewModel()
         val spellString = LoLApp.getContext().assets.open("summoner.json").reader().readText()
         val spellArray = JSONArray(spellString)
         for (i in 0 until spellArray.length()){
-            println("스펠:${spellArray.getJSONObject(i).getJSONObject("data").getJSONObject(spellId.toString()).getString("name")}")
-            spellName = spellArray.getJSONObject(i).getJSONObject("data").getJSONObject(spellId.toString()).getString("name")
+            println("스펠:${spellArray.getJSONObject(i).getJSONObject("data").getJSONObject(spellId.toString()).getJSONObject("image").getString("full")}")
+            val name = spellArray.getJSONObject(i).getJSONObject("data").getJSONObject(spellId.toString()).getJSONObject("image").getString("full")
+            spellName = "http://ddragon.leagueoflegends.com/cdn/12.1.1/img/spell/$name"
         }
         return spellName
     }
+
+    private fun longToTeam(teamId:Long):String = if (teamId.toString() == "100") "블루" else "레드"
 
 
 

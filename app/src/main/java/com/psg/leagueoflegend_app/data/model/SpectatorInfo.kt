@@ -1,13 +1,18 @@
 package com.psg.leagueoflegend_app.data.model
 
 data class SpectatorInfo(
-    val teamId: Long,
-    val champImage: String,
-    val spell1: Long,
-    val spell2: Long,
-    val rune1: String,
-    val rune2: String,
     val name: String,
-    val champMatch: String,
-    val tier: String
+    val champName: String,
+    val champImg: String,
+    val team: String,
+    val spell1: String,
+    val spell2: String,
+    val runeStyle: Rune,
+    val subStyle: Rune,
+    val mainRune: String,
+    val rune: List<Rune>
+)
+data class Rune(
+    val name:String,
+    val icon:String
 )

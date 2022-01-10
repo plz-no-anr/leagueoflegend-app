@@ -43,7 +43,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
     private fun handleEvent(event: BaseViewModel.Event) = when (event){
         is BaseViewModel.Event.ShowToast ->
             CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(this@SearchActivity,event.text, Toast.LENGTH_SHORT).show()
+                makeToast(event.text)
             }
     }
 
@@ -90,7 +90,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding,SearchViewModel>(R.lay
             override fun onItemClick(v: View, data: SearchEntity, pos: Int) {
                 viewModel.deleteSearch(data)
                 println("아이템삭제")
-                Toast.makeText(this@SearchActivity,"삭제 성공", Toast.LENGTH_SHORT).show()
+                makeToast("삭제 성공")
             }
 
         })

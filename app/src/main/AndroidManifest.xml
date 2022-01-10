@@ -8,7 +8,7 @@
 
     <application
         android:name=".LoLApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -16,16 +16,18 @@
         android:theme="@style/Theme.LeagueOfLegendApp"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.spectator.SpectatorActivity">
+
+        </activity>
+        <activity
+            android:name=".view.search.SearchActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".view.splash.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.search.SearchActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".view.splash.SplashActivity" />
         <activity
             android:name=".view.base.BaseActivity"
             tools:ignore="Instantiatable" />

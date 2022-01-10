@@ -137,6 +137,10 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                                 }
                                 toastEvent("등록성공")
                                 insertSearch(SearchEntity(league.summonerName, date))
+                                return@launch
+                            } else {
+                                println("솔로랭크가 아님")
+                                toastEvent("이번 시즌 솔로랭크 전적이 없거나\n 배치가 끝나지 않았습니다.")
                             }
                         }
                     } else {

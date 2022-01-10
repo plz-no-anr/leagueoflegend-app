@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.data.model.SpectatorInfo
 import com.psg.leagueoflegend_app.data.model.SummonerEntity
-import com.psg.leagueoflegend_app.databinding.MainItemBinding
 import com.psg.leagueoflegend_app.databinding.SpectatorItemBinding
 import kotlinx.android.synthetic.main.main_item.view.*
+import kotlinx.android.synthetic.main.spectator_item.view.*
 
 class SpectatorAdapter(var list: List<SpectatorInfo> = mutableListOf()):
     RecyclerView.Adapter<SpectatorAdapter.SpectatorHolder>() {
@@ -41,7 +41,7 @@ class SpectatorAdapter(var list: List<SpectatorInfo> = mutableListOf()):
     }
 
     interface OnItemClickListener {
-        fun onItemClick(v: View, data: SummonerEntity, pos: Int)
+        fun onItemClick(v: View, data: SpectatorInfo, pos: Int)
     }
 
     private var listener: OnItemClickListener? = null
@@ -58,7 +58,9 @@ class SpectatorAdapter(var list: List<SpectatorInfo> = mutableListOf()):
             binding.item = item
             val pos = bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION){
-
+                itemView.tv_rune.setOnClickListener {
+                    listener?.onItemClick(itemView.tv_rune,item,pos)
+                }
             }
         }
     }

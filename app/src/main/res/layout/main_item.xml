@@ -123,6 +123,7 @@
                 app:layout_constraintVertical_bias="0.258" />
 
             <LinearLayout
+                android:id="@+id/linearLayout7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="104dp"
@@ -197,25 +198,29 @@
                 android:id="@+id/ll_spectator"
                 android:layout_width="73dp"
                 android:layout_height="24dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="게임중"
+                    android:textSize="18dp"
                     tools:layout_editor_absoluteX="277dp"
                     tools:layout_editor_absoluteY="145dp" />
 
                 <ImageView
                     android:id="@+id/iv_playing"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_margin="7dp"
                     android:layout_marginStart="5dp"
                     app:playing="@{item.playing()}" />
             </LinearLayout>

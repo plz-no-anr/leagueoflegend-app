@@ -26,19 +26,19 @@
 
             <ImageView
                 android:id="@+id/iv_champ"
-                android:layout_width="105dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/lol"
+                image="@{item.champImg}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
@@ -50,20 +50,20 @@
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:src="@drawable/lol" />
+                    image="@{item.spell1}" />
 
                 <ImageView
                     android:id="@+id/iv_spell2"
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:src="@drawable/lol" />
+                    image="@{item.spell2}" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout5"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:layout_constraintStart_toEndOf="@+id/linearLayout4"
@@ -74,14 +74,14 @@
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:src="@drawable/lol" />
+                    rune="@{item.mainRune}"/>
 
                 <ImageView
                     android:id="@+id/iv_rune2"
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:src="@drawable/lol" />
+                    rune="@{item.subStyle.icon}" />
             </LinearLayout>
 
             <LinearLayout
@@ -89,7 +89,7 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:layout_constraintStart_toEndOf="@+id/linearLayout5"
                 app:layout_constraintTop_toTopOf="parent">
@@ -98,20 +98,25 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이름" />
+                    android:textSize="18sp"
+                    android:hint="이름"
+                    android:textStyle="bold"
+                    android:text="@{item.name}" />
 
                 <TextView
                     android:id="@+id/tv_champ_match"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="챔피언이름 전적" />
+                    android:textSize="16sp"
+                    android:hint="챔피언"
+                    android:text="@{item.champName}" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="47dp"
+                android:layout_marginTop="18dp"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toEndOf="@+id/linearLayout6"
                 app:layout_constraintTop_toTopOf="parent">
@@ -121,16 +126,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
-                    android:textSize="15dp"
-                    android:text="룬" />
+                    android:textSize="16sp"
+                    android:hint="룬"
+                    android:text="룬 자세히"
+                    android:textColor="@color/black"/>
 
-                <TextView
-                    android:id="@+id/tv_tier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="15dp"
-                    android:text="티어" />
+
             </LinearLayout>
 
 

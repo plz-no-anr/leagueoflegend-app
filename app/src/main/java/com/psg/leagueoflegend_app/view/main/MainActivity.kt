@@ -66,7 +66,6 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         setRv()
         setDisplay()
         setEventFlow()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -114,7 +113,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
     private fun handleEvent(event: BaseViewModel.Event) = when (event){
         is BaseViewModel.Event.ShowToast ->
             CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(this@MainActivity,event.text, Toast.LENGTH_SHORT).show()
+                makeToast(event.text)
             }
     }
 
@@ -122,14 +121,11 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
     @SuppressLint("SetTextI18n")
     override fun setDisplay(){
         binding.slMain.setOnRefreshListener {
-            val refresh = viewModel.refresh(list)
-            if (refresh){
-                binding.slMain.isRefreshing = false
-            }
+            refresh()
         }
         binding.tvDeleteAll.setOnClickListener {
             viewModel.deleteAll()
-            Toast.makeText(this@MainActivity,"전체 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            makeToast("전체 삭제되었습니다.")
         }
 
         binding.dlMain.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
@@ -172,6 +168,12 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
 //
 //        }
 
+    private fun refresh(){
+            val refresh = viewModel.refresh(list)
+            if (refresh){
+                binding.slMain.isRefreshing = false
+            }
+    }
 
     override fun setRv() {
         adapter.setHasStableIds(true)
@@ -196,18 +198,23 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                     R.id.iv_delete ->{
                         viewModel.deleteSummoner(data)
                         println("아이템삭제")
-                        Toast.makeText(this@MainActivity,"삭제 성공", Toast.LENGTH_SHORT).show()
+                        makeToast("삭제 성공")
                     }
                     R.id.iv_addProfile ->{
                         viewModel.insertProfile(ProfileEntity(data.name,data.level,data.icon))
                         println("프로필변경")
-                        Toast.makeText(this@MainActivity,"프로필 변경 성공", Toast.LENGTH_SHORT).show()
+                        makeToast("프로필 변경 성공")
                     }
                     R.id.ll_spectator ->{
-                        val intent = Intent(this@MainActivity,SpectatorActivity::class.java)
-                        intent.putExtra("name",data.name)
-                        startActivity(intent)
-                        println("관전액티비티 시작")
+                        if (data.isPlaying){
+                            val intent = Intent(this@MainActivity,SpectatorActivity::class.java)
+                            intent.putExtra("name",data.name)
+                            startActivity(intent)
+                            println("관전액티비티 시작")
+                        } else {
+                            makeToast("게임중이 아닙니다.")
+                        }
+
                     }
 
                 }
@@ -248,7 +255,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         dialog.setContentView(R.layout.dialog_settingkey)
         val params = dialog.window?.attributes
         params?.width = 1000
-        params?.height = 1000
+        params?.height = 1300
 
         println("api키?${LoLApp.pref.getApikey()}")
         dialog.tv_key.text = LoLApp.pref.getApikey()
@@ -278,7 +285,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
                 viewModel.setApikey(key)
                 dialog.dismiss()
             } else {
-                Toast.makeText(this@MainActivity,"키를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                makeToast("키를 입력해주세요.")
             }
         }
         dialog.btn_cancel.setOnClickListener {
@@ -301,6 +308,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         val alertDialog = builder.create()
         alertDialog.show()
     }
+
 
 //    private fun setNetworkObserve(){
 //        val status = NetworkStatus(applicationContext)
