@@ -8,12 +8,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
@@ -254,13 +252,16 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         }
     }
 
+    /**
+     * 키셋팅 다이얼로그 생성
+     */
     @SuppressLint("SetTextI18n")
     fun setKeyDialog(){
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_settingkey)
         val params = dialog.window?.attributes
-        params?.width = 1000
-        params?.height = 1300
+        params?.width = WindowManager.LayoutParams.WRAP_CONTENT
+        params?.height = WindowManager.LayoutParams.WRAP_CONTENT
 
         AppLogger.p("api키?${LoLApp.pref.getApikey()}")
         dialog.tv_key.text = LoLApp.pref.getApikey()
@@ -296,6 +297,12 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
         dialog.btn_cancel.setOnClickListener {
             dialog.dismiss()
         }
+        dialog.btn_newKey.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse("https://developer.riotgames.com/")
+            startActivity(i)
+        }
+
     }
 
 
