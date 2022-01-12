@@ -36,6 +36,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:hint="검색할 닉네임을 입력해주세요" />
 
             <ImageView
