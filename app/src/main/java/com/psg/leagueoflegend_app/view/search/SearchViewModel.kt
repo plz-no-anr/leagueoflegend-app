@@ -142,6 +142,7 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                             } else {
                                 AppLogger.p("솔로랭크가 아님")
                                 toastEvent("이번 시즌 솔로랭크 전적이 없거나\n 배치가 끝나지 않았습니다.")
+                                return@launch
                             }
                         }
                     } else {
@@ -153,6 +154,7 @@ class SearchViewModel(private val repository: AppRepository) : BaseViewModel() {
                         401 -> toastEvent("토큰이 인증되지 않았습니다.")
                         403 -> toastEvent("토큰이 만료되었습니다.")
                         404 -> toastEvent("존재하지 않는 아이디입니다.")
+                        429 -> AppLogger.p("너무 많은 요청")
                         else -> toastEvent("이번 시즌 전적이 존재하지 않습니다.")
                     }
                     AppLogger.p(
