@@ -1,8 +1,12 @@
 package com.psg.leagueoflegend_app.module
 
-import com.psg.leagueoflegend_app.data.repository.AppRepository
+import com.psg.data.repository.LolRepositoryImpl
+import com.psg.data.repository.key.KeyRepositoryImpl
+import com.psg.domain.repository.KeyRepository
+import com.psg.domain.repository.LolRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single { AppRepository(get(),get()) }
+    single<LolRepository> { LolRepositoryImpl(get(), get()) }
+    single<KeyRepository> { KeyRepositoryImpl(get()) }
 }
