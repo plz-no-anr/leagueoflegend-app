@@ -1,15 +1,17 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 30
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -32,11 +34,12 @@ android {
 
 dependencies {
     def room_version = "2.3.0"
+    def lifecycle_version = "2.3.0"
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    testImplementation 'junit:junit:4.13.2'
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
@@ -48,7 +51,10 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:2.2.6"
 
-//coroutine
+    // koin
+    implementation "io.insert-koin:koin-android:$koin_version"
+
+    //coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
 
     // Retrofit 라이브러리
@@ -60,7 +66,12 @@ dependencies {
 // Scalars 변환기 라이브러리
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
 
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    // LiveData - 데이터의 변경 사항을 알 수 있음
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
+
+    testImplementation "org.robolectric:robolectric:4.2.1"
 
     //multi module
     implementation project(':domain')
