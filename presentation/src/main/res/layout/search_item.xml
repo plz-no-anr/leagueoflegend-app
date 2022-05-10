@@ -5,7 +5,7 @@
     <data>
         <variable
             name="searchItem"
-            type="com.psg.data.model.local.SearchEntity" />
+            type="com.psg.domain.model.Search" />
     <variable
         name="viewModel"
         type="com.psg.leagueoflegend_app.view.search.SearchViewModel" />

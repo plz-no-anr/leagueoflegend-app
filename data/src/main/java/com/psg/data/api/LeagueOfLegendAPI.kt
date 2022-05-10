@@ -13,17 +13,17 @@ interface LeagueOfLegendAPI {
     suspend fun getSummoner(
         @Path("summonerName") summonerName: String,
         @Query("api_key") api_key: String
-    ): SummonerResponse
+    ): Response<SummonerResponse>
 
     @GET("league/v4/entries/by-summoner/{encryptedSummonerId}")
     suspend fun getLeague(
         @Path("encryptedSummonerId") encryptedSummonerId: String?,
         @Query("api_key") api_key: String
-    ): Set<LeagueEntryDTO>
+    ): Response<Set<LeagueEntryDTO>>
 
     @GET("spectator/v4/active-games/by-summoner/{encryptedSummonerId}")
     suspend fun getSpectator(
         @Path("encryptedSummonerId") encryptedSummonerId: String?,
         @Query("api_key") api_key: String
-    ): CurrentGameInfo
+    ): Response<CurrentGameInfo>
 }

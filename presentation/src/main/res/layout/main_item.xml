@@ -8,7 +8,7 @@
     <data>
         <variable
             name="item"
-            type="com.psg.data.model.local.SummonerEntity" />
+            type="com.psg.domain.model.Summoner" />
     </data>
 
     <androidx.cardview.widget.CardView

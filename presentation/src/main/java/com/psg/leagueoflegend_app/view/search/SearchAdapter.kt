@@ -7,10 +7,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.psg.leagueoflegend_app.R
 import com.psg.data.model.local.SearchEntity
+import com.psg.domain.model.Search
 import com.psg.leagueoflegend_app.databinding.SearchItemBinding
 import kotlinx.android.synthetic.main.search_item.view.*
 
-class SearchAdapter(var list: List<SearchEntity> = mutableListOf()) :
+class SearchAdapter(var list: List<Search> = mutableListOf()) :
     RecyclerView.Adapter<SearchAdapter.SearchHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchHolder = (SearchHolder(
@@ -32,13 +33,13 @@ class SearchAdapter(var list: List<SearchEntity> = mutableListOf()) :
     }
 
 
-    fun setData(items: List<SearchEntity>) {
+    fun setData(items: List<Search>) {
         list = items
         notifyDataSetChanged()
     }
 
     interface OnItemClickListener {
-        fun onItemClick(v: View, data: SearchEntity, pos: Int)
+        fun onItemClick(v: View, data: Search, pos: Int)
     }
 
     private var listener: OnItemClickListener? = null
@@ -50,7 +51,7 @@ class SearchAdapter(var list: List<SearchEntity> = mutableListOf()) :
 
     inner class SearchHolder(private val binding: SearchItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: SearchEntity) {
+        fun bind(item: Search) {
             binding.searchItem = item
 
             val pos = bindingAdapterPosition

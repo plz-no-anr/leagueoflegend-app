@@ -7,10 +7,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.psg.leagueoflegend_app.R
 import com.psg.data.model.local.SummonerEntity
+import com.psg.domain.model.Summoner
 import com.psg.leagueoflegend_app.databinding.MainItemBinding
 import kotlinx.android.synthetic.main.main_item.view.*
 
-class MainAdapter(var list: List<SummonerEntity> = mutableListOf()):
+class MainAdapter(var list: List<Summoner> = mutableListOf()):
     RecyclerView.Adapter<MainAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder = (MainHolder(
@@ -32,13 +33,13 @@ class MainAdapter(var list: List<SummonerEntity> = mutableListOf()):
     }
 
 
-    fun setData(items: List<SummonerEntity>) {
+    fun setData(items: List<Summoner>) {
         list = items
         notifyDataSetChanged()
     }
 
     interface OnItemClickListener {
-        fun onItemClick(v: View, data: SummonerEntity, pos: Int)
+        fun onItemClick(v: View, data: Summoner, pos: Int)
     }
 
     private var listener: OnItemClickListener? = null
@@ -51,7 +52,7 @@ class MainAdapter(var list: List<SummonerEntity> = mutableListOf()):
 
     inner class MainHolder(private val binding: MainItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
-                fun bind(item: SummonerEntity){
+                fun bind(item: Summoner){
                     binding.item = item
                     val pos = bindingAdapterPosition
                     if (pos != RecyclerView.NO_POSITION){
