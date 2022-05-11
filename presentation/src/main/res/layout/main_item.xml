@@ -7,8 +7,11 @@
 
     <data>
         <variable
-            name="item"
+            name="mainItem"
             type="com.psg.domain.model.Summoner" />
+        <variable
+            name="viewModel"
+            type="com.psg.leagueoflegend_app.view.main.MainViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -33,7 +36,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/lol"
-                app:image="@{item.icon}"
+                app:image="@{mainItem.icon}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +49,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="12dp"
                 android:textAlignment="center"
-                android:text="@{item.name}"
+                android:text="@{mainItem.name}"
                 android:textStyle="bold"
                 android:hint="이름"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +63,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="2dp"
                 android:textAlignment="center"
-                android:text="@{item.getLevels()}"
+                android:text="@{mainItem.getLevels()}"
                 android:textStyle="bold"
                 android:hint="레벨"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -74,11 +77,11 @@
                 android:layout_height="70dp"
                 android:layout_marginStart="32dp"
                 android:scaleType="centerInside"
+                app:tiericon="@{mainItem.tier}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_icon"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.256"
-                app:tiericon="@{item.tierIcon()}" />
+                app:layout_constraintVertical_bias="0.256"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,8 +104,8 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="48dp"
                 android:layout_toEndOf="@+id/iv_icon"
+                android:text="@{mainItem.getTierRank()}"
                 android:hint="티어 랭크"
-                android:text="@{item.getTierRank()}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/iv_tierImg"
@@ -113,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="리그포인트/승리패배"
-                android:text="@{item.getLeaguePoint()}"
+                android:text="@{mainItem.getLeaguePoint()}"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -162,36 +165,36 @@
                     android:id="@+id/iv_mini1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_horizontal_rule_24"
-                    app:mini="@{item.miniImage1()}"/>
+                    app:mini1="@{mainItem.MiniSeries}"
+                    android:src="@drawable/ic_baseline_horizontal_rule_24"/>
 
                 <ImageView
                     android:id="@+id/iv_mini2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_horizontal_rule_24"
-                    app:mini="@{item.miniImage2()}"/>
+                    app:mini2="@{mainItem.MiniSeries}"
+                    android:src="@drawable/ic_baseline_horizontal_rule_24"/>
 
                 <ImageView
                     android:id="@+id/iv_mini3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_horizontal_rule_24"
-                    app:mini="@{item.miniImage3()}"/>
+                    app:mini3="@{mainItem.MiniSeries}"
+                    android:src="@drawable/ic_baseline_horizontal_rule_24"/>
 
                 <ImageView
                     android:id="@+id/iv_mini4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_horizontal_rule_24"
-                    app:mini="@{item.miniImage4()}"/>
+                    app:mini4="@{mainItem.MiniSeries}"
+                    android:src="@drawable/ic_baseline_horizontal_rule_24"/>
 
                 <ImageView
                     android:id="@+id/iv_mini5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_horizontal_rule_24"
-                    app:mini="@{item.miniImage5()}"/>
+                    app:mini5="@{mainItem.MiniSeries}"
+                    android:src="@drawable/ic_baseline_horizontal_rule_24"/>
             </LinearLayout>
 
             <LinearLayout
@@ -217,12 +220,12 @@
 
                 <ImageView
                     android:id="@+id/iv_playing"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    app:playing="@{mainItem.playing}"
                     android:layout_margin="7dp"
-                    android:layout_marginStart="5dp"
-                    app:playing="@{item.playing()}" />
+                    android:layout_marginStart="5dp"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

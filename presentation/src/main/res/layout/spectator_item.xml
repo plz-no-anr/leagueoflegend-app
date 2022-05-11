@@ -6,8 +6,9 @@
 
     <data>
         <variable
-            name="item"
+            name="spectatorItem"
             type="com.psg.domain.model.SpectatorInfo" />
+
     </data>
 
     <androidx.cardview.widget.CardView
@@ -31,7 +32,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="8dp"
-                image="@{item.champImg}"
+                image="@{spectatorItem.champImg}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,14 +51,14 @@
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    image="@{item.spell1}" />
+                    image="@{spectatorItem.spell1}" />
 
                 <ImageView
                     android:id="@+id/iv_spell2"
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    image="@{item.spell2}" />
+                    image="@{spectatorItem.spell2}" />
             </LinearLayout>
 
             <LinearLayout
@@ -74,14 +75,14 @@
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    rune="@{item.mainRune}"/>
+                    rune="@{spectatorItem.mainRune}"/>
 
                 <ImageView
                     android:id="@+id/iv_rune2"
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    rune="@{item.subStyle.icon}" />
+                    rune="@{spectatorItem.subStyle.icon}" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,7 +102,7 @@
                     android:textSize="18sp"
                     android:hint="이름"
                     android:textStyle="bold"
-                    android:text="@{item.name}" />
+                    android:text="@{spectatorItem.name}" />
 
                 <TextView
                     android:id="@+id/tv_champ_match"
@@ -109,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:hint="챔피언"
-                    android:text="@{item.champName}" />
+                    android:text="@{spectatorItem.champName}" />
             </LinearLayout>
 
             <LinearLayout

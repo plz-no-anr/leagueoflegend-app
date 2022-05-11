@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="vm"
+            name="viewModel"
             type="com.psg.leagueoflegend_app.view.spectator.SpectatorViewModel" />
     </data>
 

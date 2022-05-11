@@ -63,6 +63,7 @@
                     android:layout_gravity="right"
                     android:textSize="15dp"
                     android:layout_marginEnd="30dp"
+                    android:onClick="@{()->viewModel.deleteAll()}"
                     android:text="전체삭제"/>
 
                 <androidx.recyclerview.widget.RecyclerView

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable
-            name="item"
-            type="com.psg.data.model.local.ProfileEntity" />
+<!--        <variable-->
+<!--            name="item"-->
+<!--            type="com.psg.data.model.local.ProfileEntity" />-->
     </data>
 
 <LinearLayout
