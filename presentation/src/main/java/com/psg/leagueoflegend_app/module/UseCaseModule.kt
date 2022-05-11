@@ -11,10 +11,13 @@ val useCaseModule = module {
     single { GetSearchUseCase(get()) }
     single { GetProfileUseCase(get()) }
     single { GetKeyUseCase(get()) }
+    single { InsertKeyUseCase(get()) }
     single { DeleteSummonerUseCase(get()) }
     single { DeleteSummonerAllUseCase(get()) }
     single { InsertProfileUseCase(get()) }
     single { DeleteProfileUseCase(get()) }
     single { DeleteSearchUseCase(get()) }
     single { DeleteSearchAllUseCase(get()) }
+    single { RefreshDataUseCase(get()) }
+    single { SearchLeagueUseCase(get()) }
 }

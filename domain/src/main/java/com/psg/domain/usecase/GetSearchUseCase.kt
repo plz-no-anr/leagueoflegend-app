@@ -5,5 +5,5 @@ import com.psg.domain.repository.LolRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetSearchUseCase(private val repository: LolRepository) {
-    fun execute(): Flow<List<Search>> = repository.getSearch()
+    suspend fun execute(): Flow<List<Search>> = repository.getSearch()
 }
