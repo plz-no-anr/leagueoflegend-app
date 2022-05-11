@@ -11,6 +11,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val res: Int): AppCompatActivity() {
@@ -23,14 +28,32 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
         AppLogger.i(TAG,"onCreate")
 //        Log.i(TAG,"onCreate")
         binding = DataBindingUtil.setContentView(this, res)
+        binding.lifecycleOwner = this
+        setEventFlow()
     }
 
-    open fun setDisplay(){
+    open fun setObserve() {
 
+    }
+
+    open fun initView(){
     }
 
     open fun setRv(){
 
+    }
+
+    open fun setEventFlow(){
+        CoroutineScope(Dispatchers.IO).launch{
+            viewModel.eventFlow.collect { event -> handleEvent(event) }
+        }
+    }
+
+    open fun handleEvent(event: BaseViewModel.Event) = when (event){
+        is BaseViewModel.Event.ShowToast ->
+            CoroutineScope(Dispatchers.Main).launch {
+                makeToast(event.text)
+            }
     }
 
     open fun setToolbar(toolbar: Toolbar){

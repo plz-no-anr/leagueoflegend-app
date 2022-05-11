@@ -12,6 +12,10 @@ open class BaseViewModel: ViewModel() {
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow = _eventFlow.asSharedFlow()
 
+    open fun initViewModel(){
+
+    }
+
     open fun toastEvent(text: String){
         event(Event.ShowToast(text))
     }
