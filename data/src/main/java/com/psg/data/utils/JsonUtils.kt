@@ -1,13 +1,14 @@
 package com.psg.data.utils
 
+import android.content.Context
 import com.psg.domain.model.SpectatorInfo
 import org.json.JSONArray
 
-//object JsonUtils {
+class JsonUtils(val context: Context) {
 
-     fun jsonToMap(mapId: Long): String {
+    fun jsonToMap(mapId: Long): String {
         var mapName = ""
-        val mapString = ContextManager.getContext().assets.open("map.json").reader().readText()
+        val mapString = context.assets.open("map.json").reader().readText()
         val mapArray = JSONArray(mapString)
         for (i in 0 until mapArray.length()) {
             AppLogger.p(
@@ -29,7 +30,7 @@ import org.json.JSONArray
             champName = "NoBan"
             return champName
         }
-        val champString = ContextManager.getContext().assets.open("champion.json").reader().readText()
+        val champString = context.assets.open("champion.json").reader().readText()
         val champArr = JSONArray(champString)
         for (i in 0 until champArr.length()) {
 //            AppLogger.p("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
@@ -47,7 +48,7 @@ import org.json.JSONArray
             champName = "NoBan"
             return champName
         }
-        val champString = ContextManager.getContext().assets.open("champion.json").reader().readText()
+        val champString = context.assets.open("champion.json").reader().readText()
         val champArr = JSONArray(champString)
         for (i in 0 until champArr.length()) {
 //            AppLogger.p("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
@@ -61,7 +62,7 @@ import org.json.JSONArray
      fun jsonToRuneStyle(perkStyle: Long): SpectatorInfo.Rune {
         var style = SpectatorInfo.Rune("", "")
 
-        val runeString = ContextManager.getContext().assets.open("runesReforged.json").reader().readText()
+        val runeString = context.assets.open("runesReforged.json").reader().readText()
         val runeArray = JSONArray(runeString)
         for (i in 0 until runeArray.length()) {
             if (runeArray.getJSONObject(i).getString("id") == perkStyle.toString()) {
@@ -77,7 +78,7 @@ import org.json.JSONArray
 
      fun jsonToMainRunes(perkStyle: Long, perks: Long): String {
         var runeName = ""
-        val runeString = ContextManager.getContext().assets.open("runesReforged.json").reader().readText()
+        val runeString = context.assets.open("runesReforged.json").reader().readText()
         val runeArray = JSONArray(runeString)
         for (j in 0 until runeArray.length()) {
             if (runeArray.getJSONObject(j).getString("id") == perkStyle.toString()) {
@@ -98,7 +99,7 @@ import org.json.JSONArray
 
      fun jsonToRunes(perkStyle: Long, subStyle: Long, perks: List<Long>): List<SpectatorInfo.Rune> {
         val runeNames = MutableList(6) { SpectatorInfo.Rune("", "") }
-        val runeString = ContextManager.getContext().assets.open("runesReforged.json").reader().readText()
+        val runeString = context.assets.open("runesReforged.json").reader().readText()
         val runeArray = JSONArray(runeString)
         for (i in perks.indices) {
             if (i < 4) {
@@ -156,7 +157,7 @@ import org.json.JSONArray
 
      fun jsonToSpell(spellId: Long): String {
         var spellName = ""
-        val spellString = ContextManager.getContext().assets.open("summoner.json").reader().readText()
+        val spellString = context.assets.open("summoner.json").reader().readText()
         val spellArray = JSONArray(spellString)
         for (i in 0 until spellArray.length()) {
             AppLogger.p(
@@ -174,4 +175,4 @@ import org.json.JSONArray
     }
 
      fun longToTeam(teamId: Long): String = if (teamId.toString() == "100") "블루" else "레드"
-//}
+}

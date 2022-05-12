@@ -7,6 +7,6 @@ import com.psg.domain.repository.LolRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<LolRepository> { LolRepositoryImpl(get(), get()) }
+    single<LolRepository> { LolRepositoryImpl(get(), get(),get(), get()) }
     single<KeyRepository> { KeyRepositoryImpl(get()) }
 }

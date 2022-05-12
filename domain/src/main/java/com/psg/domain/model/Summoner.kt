@@ -19,33 +19,20 @@ data class Summoner(
         var progress: String
     )
 
-//    fun getLevels() = "LV: $level"
+    fun getLevels() = "LV: $level"
 //
-//    fun getLeaguePoint() = "$leaguePoints LP / ${wins}승 ${losses}패"
+    fun getLeaguePoint() = "$leaguePoints LP / ${wins}승 ${losses}패"
 //
-//    fun getTierRank() = "$tier $rank"
-//
-//    fun tierIcon() = when(tier){
-//        "IRON" -> R.drawable.emblem_iron
-//        "BRONZE" -> R.drawable.emblem_bronze
-//        "SILVER" -> R.drawable.emblem_silver
-//        "GOLD" -> R.drawable.emblem_gold
-//        "PLATINUM" -> R.drawable.emblem_platinum
-//        "DIAMOND" -> R.drawable.emblem_diamond
-//        "MASTER" -> R.drawable.emblem_master
-//        "GRANDMASTER" -> R.drawable.emblem_grandmaster
-//        "CHALLENGER" -> R.drawable.emblem_challenger
-//        else -> R.drawable.lol
-//    }
-//
-//    fun getMiniVisible():String = if (miniSeries?.progress != "No") "visible" else "gone"
+    fun getTierRank() = "$tier $rank"
+
+    fun getMiniVisible():String = if (miniSeries?.progress != "No") "visible" else "gone"
 //
 //    fun miniImage1() = getMiniImage(0)
 //    fun miniImage2() = getMiniImage(1)
 //    fun miniImage3() = getMiniImage(2)
 //    fun miniImage4() = getMiniImage(3)
 //    fun miniImage5() = getMiniImage(4)
-//
+
 //    private fun getMiniImage(index: Int):Int{
 //        var result = 0
 //        if (miniSeries != null && miniSeries.progress != "No"){
@@ -58,7 +45,7 @@ data class Summoner(
 //        }
 //        return result
 //    }
-//
+
 //    fun playing() = if (isPlaying) R.color.green_new else R.color.color_red
 }
 

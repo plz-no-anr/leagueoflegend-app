@@ -2,7 +2,6 @@ package com.psg.leagueoflegend_app.di
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.psg.leagueoflegend_app.module.*
 import org.koin.android.ext.koin.androidContext
@@ -34,7 +33,8 @@ class LoLApp: Application() {
                 remoteDataModule,
                 repositoryModule,
                 useCaseModule,
-                viewModelModule
+                viewModelModule,
+                jsonModule
             )
         }
     }
