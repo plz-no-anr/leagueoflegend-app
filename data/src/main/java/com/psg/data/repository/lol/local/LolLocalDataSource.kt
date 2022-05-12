@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LolLocalDataSource {
     // Room Main
-    fun getSummoner() : Flow<List<SummonerEntity>>
+    suspend fun getSummoner() : List<SummonerEntity>
 
     suspend fun insertSummoner(summonerEntity: SummonerEntity)
 
@@ -18,7 +18,7 @@ interface LolLocalDataSource {
     suspend fun deleteSummonerAll()
 
     // Search
-    fun getSearch() : Flow<List<SearchEntity>>
+    suspend fun getSearch() : List<SearchEntity>
 
     suspend fun insertSearch(searchEntity: SearchEntity)
 
@@ -27,7 +27,7 @@ interface LolLocalDataSource {
     suspend fun deleteSearchAll()
 
     // Profile
-    fun getProfile() : Flow<ProfileEntity>
+    suspend fun getProfile() : ProfileEntity
 
     suspend fun insertProfile(profileEntity: ProfileEntity)
 

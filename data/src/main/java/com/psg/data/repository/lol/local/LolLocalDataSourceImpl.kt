@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.flow
 
 class LolLocalDataSourceImpl(private val dao:LoLDao): LolLocalDataSource {
     // Room Main
-    override fun getSummoner():Flow<List<SummonerEntity>> = flow {
-        emit(dao.getSummoner())
-    }
+    override suspend fun getSummoner() = dao.getSummoner()
 
     override suspend fun insertSummoner(summonerEntity: SummonerEntity){
         dao.insertSummoner(summonerEntity)
@@ -30,9 +28,7 @@ class LolLocalDataSourceImpl(private val dao:LoLDao): LolLocalDataSource {
     }
 
     // Search
-    override fun getSearch():Flow<List<SearchEntity>> = flow {
-        emit(dao.getSearch())
-    }
+    override suspend fun getSearch():List<SearchEntity> = dao.getSearch()
 
     override suspend fun insertSearch(searchEntity: SearchEntity){
         dao.insertSearch(searchEntity)
@@ -46,9 +42,8 @@ class LolLocalDataSourceImpl(private val dao:LoLDao): LolLocalDataSource {
         dao.deleteSearchAll()
     }
     // Search
-    override fun getProfile(): Flow<ProfileEntity> = flow {
-        emit(dao.getProfile())
-    }
+    override suspend fun getProfile(): ProfileEntity = dao.getProfile()
+
 
     override suspend fun insertProfile(profileEntity: ProfileEntity){
         dao.insertProfile(profileEntity)
