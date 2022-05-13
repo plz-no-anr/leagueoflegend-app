@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import com.psg.data.model.local.ProfileEntity
 import com.psg.data.model.local.SummonerEntity
+import com.psg.domain.model.Profile
+import com.psg.domain.model.Summoner
 import com.psg.leagueoflegend_app.di.LoLApp
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.databinding.ActivityMainBinding
 import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.base.BaseActivity
 import com.psg.leagueoflegend_app.base.BaseViewModel
+import com.psg.leagueoflegend_app.utils.NetworkUtils
 import com.psg.leagueoflegend_app.view.search.SearchActivity
 import com.psg.leagueoflegend_app.view.spectator.SpectatorActivity
 import kotlinx.android.synthetic.main.dialog_settingkey.*
@@ -28,42 +31,49 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main),NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main),
+    NavigationView.OnNavigationItemSelectedListener {
     override val TAG: String = MainActivity::class.java.simpleName
     override val viewModel: MainViewModel by inject()
     private val adapter = MainAdapter()
-//    private var refreshLock = false
-    private lateinit var list : List<SummonerEntity>
-    private var profile : ProfileEntity = ProfileEntity("","","")
+
+    //    private var refreshLock = false
+    private var list: List<Summoner> = listOf()
+    private var profile: Profile = Profile("", "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.initViewModel()
         setToolbar(binding.toolbar)
+        checkNetwork()
+        initView()
+        setRv()
         setObserve()
 //        setNetworkObserve()
-        setRv()
-        setDisplay()
-        setEventFlow()
+//        setEventFlow()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.search -> {
-                val intent = Intent(this,SearchActivity::class.java)
+                val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.option -> {
                 binding.dlMain.openDrawer(Gravity.RIGHT)
-                if (profile.icon != ""){
+                if (profile.icon != "") {
                     binding.nvMain.tv_name.text = profile.name
                     binding.nvMain.tv_level.text = "LV: ${profile.level}"
-                    viewModel.bindImage(binding.nvMain.iv_image,profile.icon)
+                    viewModel.bindImage(binding.nvMain.iv_image, profile.icon)
                     AppLogger.p("아이콘:${profile.icon}")
                 } else {
                     binding.nvMain.tv_name.text = "이름"
                     binding.nvMain.tv_level.text = "LV: "
-                    viewModel.bindImage(binding.nvMain.iv_image,"http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/29.png")
+                    viewModel.bindImage(
+                        binding.nvMain.iv_image,
+                        "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/29.png"
+                    )
                 }
                 true // 드로어 레이아웃 추가
             }
@@ -82,27 +92,33 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
 
-    private fun setEventFlow(){
-        CoroutineScope(Dispatchers.IO).launch{
-            viewModel.eventFlow.collect { event -> handleEvent(event) }
-        }
-    }
+//    override fun setEventFlow(){
+//        CoroutineScope(Dispatchers.IO).launch{
+//            viewModel.eventFlow.collect { event -> handleEvent(event) }
+//        }
+//    }
+//
+//    private fun handleEvent(event: BaseViewModel.Event) = when (event){
+//        is BaseViewModel.Event.ShowToast ->
+//            CoroutineScope(Dispatchers.Main).launch {
+//                makeToast(event.text)
+//            }
+//    }
 
-    private fun handleEvent(event: BaseViewModel.Event) = when (event){
-        is BaseViewModel.Event.ShowToast ->
-            CoroutineScope(Dispatchers.Main).launch {
-                makeToast(event.text)
-            }
+    override fun onStart() {
+        super.onStart()
+        viewModel.summonerUpdate()
     }
-
 
     @SuppressLint("SetTextI18n")
-    override fun setDisplay(){
+    override fun initView() {
+        binding.viewModel = viewModel
+
         binding.slMain.setOnRefreshListener {
             refresh(list)
         }
         binding.tvDeleteAll.setOnClickListener {
-            viewModel.deleteAll()
+//            viewModel.deleteAll()
             makeToast("전체 삭제되었습니다.")
         }
 
@@ -113,25 +129,40 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
 
-    private fun setObserve(){
-        viewModel.summonerList.observe(this,{
-            if (it != null){
+    override fun setObserve() {
+        viewModel.summonerList.observe(this) {
+            if (it != null) {
                 list = it
                 refresh(it)
             } else {
                 AppLogger.p("리스트 null")
             }
-        })
+        }
 
-        viewModel.profile.observe(this,{
-            profile = if (it != null){
+        viewModel.profile.observe(this) {
+            profile = if (it != null) {
                 it
             } else {
                 AppLogger.p("프로필 null")
-                ProfileEntity("","","")
+                Profile("", "", "")
             }
+        }
 
-        })
+        viewModel.league.observe(this) {
+            if (it != null) {
+                when (it.code) {
+//                    0 -> makeToast("승급전 진행중")
+//                    1 -> makeToast("갱신 성공")
+//                    2 -> makeToast("이번 시즌 솔로랭크 전적이 없거나\n 배치가 끝나지 않았습니다.")
+//                    3 -> makeToast("이번 시즌 전적이 존재하지 않습니다.")
+                    401 -> makeToast("토큰이 인증되지 않았습니다.")
+                    403 -> makeToast("토큰이 만료되었습니다.")
+                    404 -> makeToast("존재하지 않는 아이디입니다.")
+                    429 -> AppLogger.p("너무 많은 요청")
+                    else -> makeToast("이번 시즌 전적이 존재하지 않습니다.")
+                }
+            }
+        }
     }
 
 //    private fun setLock(): CountDownTimer =
@@ -147,50 +178,59 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 //
 //        }
 
-    private fun refresh(list: List<SummonerEntity>){
+    private fun checkNetwork() {
+        NetworkUtils.getNetworkStatus().observe(this) { isConnected ->
+            if (!isConnected) makeToast("인터넷이 연결되어 있지 않습니다.")
+
+        }
+    }
+
+    private fun refresh(list: List<Summoner>) {
         viewModel.refresh(list)
-        viewModel.isRefresh.observe(this,{
-            if (it){
+        viewModel.isRefresh.observe(this) {
+            if (it) {
                 binding.slMain.isRefreshing = false
             }
-        })
+        }
 
     }
 
     override fun setRv() {
         adapter.setHasStableIds(true)
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         // 리사이클러뷰 역순 정렬
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
         binding.rvMain.layoutManager = layoutManager
         binding.rvMain.adapter = adapter
-        viewModel.summonerList.observe(this,{
-            if (it != null){
+        viewModel.summonerList.observe(this) {
+            if (it != null) {
                 adapter.setData(it)
                 AppLogger.p("Main: null이 아님")
-            }else{
+            } else {
                 AppLogger.p("Main: db값 null")
             }
-        })
+        }
 
-        adapter.setOnItemClickListener(object : MainAdapter.OnItemClickListener{
-            override fun onItemClick(v: View, data: SummonerEntity, pos: Int) {
-                when (v.id){
-                    R.id.iv_delete ->{
+        adapter.setOnItemClickListener(object : MainAdapter.OnItemClickListener {
+            override fun onItemClick(v: View, data: Summoner, pos: Int) {
+                when (v.id) {
+                    R.id.iv_delete -> {
                         viewModel.deleteSummoner(data)
                         AppLogger.p("아이템삭제")
                         makeToast("삭제 성공")
+                        viewModel.summonerUpdate()
                     }
-                    R.id.iv_addProfile ->{
-                        viewModel.insertProfile(ProfileEntity(data.name,data.level,data.icon))
+                    R.id.iv_addProfile -> {
+                        viewModel.insertProfile(Profile(data.name, data.level, data.icon))
                         AppLogger.p("프로필변경")
                         makeToast("프로필 변경 성공")
+                        viewModel.profileUpdate()
                     }
-                    R.id.ll_spectator ->{
-                        if (data.isPlaying){
-                            val intent = Intent(this@MainActivity,SpectatorActivity::class.java)
-                            intent.putExtra("name",data.name)
+                    R.id.ll_spectator -> {
+                        if (data.isPlaying) {
+                            val intent = Intent(this@MainActivity, SpectatorActivity::class.java)
+                            intent.putExtra("name", data.name)
                             startActivity(intent)
                             AppLogger.p("관전액티비티 시작")
                         } else {
@@ -208,7 +248,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
             R.id.item_info -> {
                 AppLogger.p("정보버튼")
                 true
@@ -235,23 +275,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
      * 키셋팅 다이얼로그 생성
      */
     @SuppressLint("SetTextI18n")
-    fun setKeyDialog(){
+    fun setKeyDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_settingkey)
         val params = dialog.window?.attributes
         params?.width = WindowManager.LayoutParams.WRAP_CONTENT
         params?.height = WindowManager.LayoutParams.WRAP_CONTENT
 
-        AppLogger.p("api키?${LoLApp.pref.getApikey()}")
-        dialog.tv_key.text = LoLApp.pref.getApikey()
+        AppLogger.p("api키?${viewModel.apiKey.value}")
+        dialog.tv_key.text = viewModel.apiKey.value
 
         dialog.show()
         dialog.tv_key.setOnClickListener {
-            if (dialog.tv_key.text.isNotEmpty()){
+            if (dialog.tv_key.text.isNotEmpty()) {
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("키 삭제").setMessage("정말로 삭제하시겠습니까?")
                 builder.setPositiveButton("삭제") { dialog1, _ ->
-                    viewModel.delApikey()
+//                    viewModel.delApikey()
                     dialog1.dismiss()
                     dialog.tv_key.text = ""
                 }
@@ -265,7 +305,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         }
         dialog.btn_confirm.setOnClickListener {
-            val key = dialog.et_key.text.toString().replace(" ","")
+            val key = dialog.et_key.text.toString().replace(" ", "")
             if (key.isNotEmpty()) {
                 viewModel.setApikey(key)
                 dialog.dismiss()
@@ -285,11 +325,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
 
-    private fun deleteKeyDialog(){
+    private fun deleteKeyDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("키 삭제").setMessage("정말로 삭제하시겠습니까?")
         builder.setPositiveButton("삭제") { dialog, _ ->
-            viewModel.delApikey()
+//            viewModel.delApikey()
             dialog.dismiss()
         }
         builder.setNegativeButton("취소") { dialog, _ ->
@@ -299,6 +339,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         val alertDialog = builder.create()
         alertDialog.show()
     }
+
+
 
 
 //    private fun setNetworkObserve(){
@@ -311,8 +353,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 //            }
 //        })
 //    }
-
-
 
 
 }

@@ -5,13 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.psg.leagueoflegend_app.R
-import com.psg.data.model.local.SummonerEntity
 import com.psg.domain.model.Summoner
+import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.databinding.MainItemBinding
 import kotlinx.android.synthetic.main.main_item.view.*
 
-class MainAdapter(var list: List<Summoner> = mutableListOf()):
+class MainAdapter(var list: List<Summoner> = mutableListOf()) :
     RecyclerView.Adapter<MainAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder = (MainHolder(
@@ -49,35 +48,51 @@ class MainAdapter(var list: List<Summoner> = mutableListOf()):
     }
 
 
-
     inner class MainHolder(private val binding: MainItemBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-                fun bind(item: Summoner){
-                    binding.item = item
-                    val pos = bindingAdapterPosition
-                    if (pos != RecyclerView.NO_POSITION){
-                        itemView.iv_delete.setOnClickListener {
-                            listener?.onItemClick(itemView.iv_delete,item,pos)
-                        }
-                        itemView.iv_addProfile.setOnClickListener {
-                            listener?.onItemClick(itemView.iv_addProfile,item,pos)
-                        }
-
-                        itemView.ll_spectator.setOnClickListener {
-//                            if (item.isPlaying) {
-                                listener?.onItemClick(itemView.ll_spectator, item, pos)
-//                            }
-                        }
-
-                        if (item.miniSeries?.progress != "No"){
-                            itemView.ll_mini.visibility = View.VISIBLE
-                        } else {
-                            itemView.ll_mini.visibility = View.INVISIBLE
-                        }
-
-                    }
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Summoner) {
+            binding.mainItem = item
+            val pos = bindingAdapterPosition
+            if (pos != RecyclerView.NO_POSITION) {
+                itemView.iv_delete.setOnClickListener {
+                    listener?.onItemClick(itemView.iv_delete, item, pos)
                 }
+                itemView.iv_addProfile.setOnClickListener {
+                    listener?.onItemClick(itemView.iv_addProfile, item, pos)
+                }
+
+                itemView.ll_spectator.setOnClickListener {
+                    listener?.onItemClick(itemView.ll_spectator, item, pos)
+                }
+
+                if (item.miniSeries?.progress != "No") {
+                    itemView.ll_mini.visibility = View.VISIBLE
+                } else {
+                    itemView.ll_mini.visibility = View.INVISIBLE
+                }
+
+//                loadImage(itemView.iv_icon,item.icon)
+//                itemView.tv_level.text = getLevels(item)
+//                itemView.tv_id.text = item.name
+//                tierIcon(itemView.iv_tierImg, tierIcon(item))
+//                itemView.tv_tier_rank.text = getTierRank(item)
+//                itemView.tv_leaguePoint.text = getLeaguePoint(item)
+//                miniImage(itemView.iv_mini1,miniImage1(item))
+//                miniImage(itemView.iv_mini2,miniImage2(item))
+//                miniImage(itemView.iv_mini3,miniImage3(item))
+//                miniImage(itemView.iv_mini4,miniImage4(item))
+//                miniImage(itemView.iv_mini5,miniImage5(item))
+//
+//                isPlaying(itemView.iv_playing, playing(item))
+
             }
+        }
+
+
+
+    }
+
+
 
 
 }
