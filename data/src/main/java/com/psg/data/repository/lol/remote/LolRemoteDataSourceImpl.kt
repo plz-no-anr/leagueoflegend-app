@@ -1,8 +1,8 @@
 package com.psg.data.repository.lol.remote
 
 import com.psg.data.api.LeagueOfLegendAPI
-import com.psg.data.model.remote.CurrentGameInfo
-import com.psg.data.model.remote.LeagueEntryDTO
+import com.psg.data.model.remote.SpectatorResponse
+import com.psg.data.model.remote.LeagueResponse
 import com.psg.data.model.remote.SummonerResponse
 import retrofit2.Response
 
@@ -12,11 +12,11 @@ LolRemoteDataSource {
         return api.getSummoner(name, apiKey)
     }
 
-    override suspend fun searchLeague(summonerId: String?, apiKey: String): Response<Set<LeagueEntryDTO>> {
+    override suspend fun searchLeague(summonerId: String?, apiKey: String): Response<Set<LeagueResponse>> {
         return api.getLeague(summonerId, apiKey)
     }
 
-    override suspend fun searchSpectator(summonerId: String?, apiKey: String): Response<CurrentGameInfo> {
+    override suspend fun searchSpectator(summonerId: String?, apiKey: String): Response<SpectatorResponse> {
         return api.getSpectator(summonerId, apiKey)
     }
 }

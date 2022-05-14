@@ -1,6 +1,6 @@
 package com.psg.data.model.remote
 
-data class CurrentGameInfo(
+data class SpectatorResponse(
     val gameId: Long,
     val gameType: String,
     val gameStartTime: Long,
