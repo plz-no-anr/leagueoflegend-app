@@ -1,7 +1,7 @@
 package com.psg.data.api
 
-import com.psg.data.model.remote.CurrentGameInfo
-import com.psg.data.model.remote.LeagueEntryDTO
+import com.psg.data.model.remote.SpectatorResponse
+import com.psg.data.model.remote.LeagueResponse
 import com.psg.data.model.remote.SummonerResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -19,11 +19,11 @@ interface LeagueOfLegendAPI {
     suspend fun getLeague(
         @Path("encryptedSummonerId") encryptedSummonerId: String?,
         @Query("api_key") api_key: String
-    ): Response<Set<LeagueEntryDTO>>
+    ): Response<Set<LeagueResponse>>
 
     @GET("spectator/v4/active-games/by-summoner/{encryptedSummonerId}")
     suspend fun getSpectator(
         @Path("encryptedSummonerId") encryptedSummonerId: String?,
         @Query("api_key") api_key: String
-    ): Response<CurrentGameInfo>
+    ): Response<SpectatorResponse>
 }

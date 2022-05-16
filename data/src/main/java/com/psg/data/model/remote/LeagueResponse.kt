@@ -1,6 +1,6 @@
 package com.psg.data.model.remote
 
-data class LeagueEntryDTO(
+data class LeagueResponse(
     val leagueId: String? = null,
     val summonerId: String? = null,
     val summonerName: String? = null,
