@@ -1,4 +1,4 @@
-package com.psg.data.repository
+package com.psg.data.repository.lol
 
 import com.psg.data.mapper.*
 import com.psg.data.model.local.SearchEntity
