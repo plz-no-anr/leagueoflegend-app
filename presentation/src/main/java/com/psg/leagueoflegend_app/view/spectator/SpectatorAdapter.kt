@@ -53,7 +53,7 @@ class SpectatorAdapter(var list: List<SpectatorInfo> = mutableListOf()):
     inner class SpectatorHolder(private val binding: SpectatorItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SpectatorInfo){
-            binding.item = item
+            binding.spectatorItem = item
             val pos = bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION){
                 itemView.tv_rune.setOnClickListener {

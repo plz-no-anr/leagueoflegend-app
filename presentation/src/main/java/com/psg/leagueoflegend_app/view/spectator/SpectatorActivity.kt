@@ -11,16 +11,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.psg.leagueoflegend_app.di.LoLApp
-import com.psg.leagueoflegend_app.R
-import com.psg.domain.model.Rune
 import com.psg.domain.model.SpectatorInfo
+import com.psg.leagueoflegend_app.R
+import com.psg.leagueoflegend_app.base.BaseActivity
 import com.psg.leagueoflegend_app.databinding.ActivitySpectatorBinding
+import com.psg.leagueoflegend_app.di.LoLApp
 import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.view.main.getProgressDrawable
-import com.psg.leagueoflegend_app.base.BaseActivity
 import kotlinx.android.synthetic.main.dialog_rune.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewModel>(R.layout.activity_spectator) {
@@ -40,8 +41,8 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewMo
         CoroutineScope(Dispatchers.Main).launch {
             load()
         }
-        viewModel.isLoading.observe(this,{
-            if (it){
+        viewModel.isLoading.observe(this) {
+            if (it) {
                 progressOff()
                 AppLogger.p("로딩끝")
 
@@ -49,15 +50,15 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewMo
                 progressOn()
                 AppLogger.p("로딩중")
             }
-        })
+        }
     }
 
     private suspend fun load() {
-        setDisplay()
+        viewModel.initViewModel()
+        setVm()
+        initView()
         setObserve()
         setRv()
-        setDisplay()
-        setVm()
 
     }
 
@@ -87,7 +88,7 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewMo
         }
     }
 
-    override fun setDisplay() {
+    override fun initView() {
        binding.ivExit.setOnClickListener {
            finish()
        }
@@ -95,15 +96,15 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewMo
     }
 
 
-    private fun setObserve(){
-        viewModel.spectator.observe(this,{
-            if (it != null){
-                if(it.banChamp.isNotEmpty()) {
-                val list1 = mutableListOf<String>()
-                val list2 = mutableListOf<String>()
+    override fun setObserve(){
+        viewModel.spectator.observe(this) {
+            if (it != null) {
+                if (it.banChamp.isNotEmpty()) {
+                    val list1 = mutableListOf<String>()
+                    val list2 = mutableListOf<String>()
 
-                AppLogger.p("밴챔프 null x ${it.map}")
-                binding.tvMap.text = it.map
+                    AppLogger.p("밴챔프 null x ${it.map}")
+                    binding.tvMap.text = it.map
 
                     for (i in it.banChamp.indices) {
                         if (it.banChamp[i].team == "블루") {
@@ -124,26 +125,26 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewMo
                     loadImage(binding.ivRedBan4, list2[3])
                     loadImage(binding.ivRedBan5, list2[4])
                 }
-            }else{
+            } else {
                 AppLogger.p("밴챔프 null")
             }
-        })
+        }
 
-        viewModel.spectatorListB.observe(this,{
-            if (it != null){
-                for (x in it){
+        viewModel.spectatorListB.observe(this) {
+            if (it != null) {
+                for (x in it) {
                     AppLogger.p("블루팀:${x.champName}")
                 }
             }
-        })
+        }
 
-        viewModel.spectatorListR.observe(this,{
-            if (it != null){
-                for (x in it){
+        viewModel.spectatorListR.observe(this) {
+            if (it != null) {
+                for (x in it) {
                     AppLogger.p("레드팀:${x.champName}")
                 }
             }
-        })
+        }
 
 
     }
@@ -157,27 +158,27 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewMo
         binding.rvRed.adapter = adapterR
 
 
-        viewModel.spectatorListB.observe(this,{
-            if (it != null){
-                if (it.isNotEmpty()){
+        viewModel.spectatorListB.observe(this) {
+            if (it != null) {
+                if (it.isNotEmpty()) {
                     adapterB.setData(it)
                 }
                 AppLogger.p("size 0")
-            }else{
+            } else {
                 AppLogger.p("null")
             }
-        })
+        }
 
-        viewModel.spectatorListR.observe(this,{
-            if (it != null){
-                if (it.isNotEmpty()){
+        viewModel.spectatorListR.observe(this) {
+            if (it != null) {
+                if (it.isNotEmpty()) {
                     adapterR.setData(it)
                 }
                 AppLogger.p("size 0")
-            }else{
+            } else {
                 AppLogger.p("null")
             }
-        })
+        }
 
         adapterB.setOnItemClickListener(object : SpectatorAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: SpectatorInfo, pos: Int) {
@@ -235,7 +236,7 @@ class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewMo
             .into(view)
     }
 
-    private fun loadAsset(view: ImageView, tv:TextView, rune: Rune){
+    private fun loadAsset(view: ImageView, tv:TextView, rune: SpectatorInfo.Rune){
         tv.text = rune.name
         val asset = LoLApp.getContext().resources.assets
         val input = rune.icon.let { asset.open(it) }
