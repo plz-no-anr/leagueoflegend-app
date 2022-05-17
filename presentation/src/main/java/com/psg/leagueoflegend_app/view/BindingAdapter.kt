@@ -66,7 +66,7 @@ fun miniImage(view: ImageView, miniSeries: Summoner.MiniSeries){
 @BindingAdapter("mini2")
 fun miniImage2(view: ImageView, miniSeries: Summoner.MiniSeries){
     val result = if(miniSeries.progress != "No"){
-        when(miniSeries.progress[0]){
+        when(miniSeries.progress[1]){
             'W' -> R.drawable.ic_baseline_check_24
             'L' -> R.drawable.ic_baseline_close_24
             'N' -> R.drawable.ic_baseline_horizontal_rule_24
@@ -82,7 +82,7 @@ fun miniImage2(view: ImageView, miniSeries: Summoner.MiniSeries){
 @BindingAdapter("mini3")
 fun miniImage3(view: ImageView, miniSeries: Summoner.MiniSeries){
     val result = if(miniSeries.progress != "No"){
-        when(miniSeries.progress[0]){
+        when(miniSeries.progress[2]){
             'W' -> R.drawable.ic_baseline_check_24
             'L' -> R.drawable.ic_baseline_close_24
             'N' -> R.drawable.ic_baseline_horizontal_rule_24
@@ -98,7 +98,7 @@ fun miniImage3(view: ImageView, miniSeries: Summoner.MiniSeries){
 @BindingAdapter("mini4")
 fun miniImage4(view: ImageView, miniSeries: Summoner.MiniSeries){
     val result = if(miniSeries.progress != "No"){
-        when(miniSeries.progress[0]){
+        when(miniSeries.progress[3]){
             'W' -> R.drawable.ic_baseline_check_24
             'L' -> R.drawable.ic_baseline_close_24
             'N' -> R.drawable.ic_baseline_horizontal_rule_24
@@ -113,9 +113,8 @@ fun miniImage4(view: ImageView, miniSeries: Summoner.MiniSeries){
 
 @BindingAdapter("mini5")
 fun miniImage5(view: ImageView, miniSeries: Summoner.MiniSeries){
-    var result = 0
-    result = if(miniSeries.progress != "No"){
-        when(miniSeries.progress[0]){
+    val result: Int = if(miniSeries.progress != "No"){
+        when(miniSeries.progress[4]){
             'W' -> R.drawable.ic_baseline_check_24
             'L' -> R.drawable.ic_baseline_close_24
             'N' -> R.drawable.ic_baseline_horizontal_rule_24
