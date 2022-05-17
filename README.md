@@ -15,4 +15,4 @@
 ---
 
 ## 사용기술
-#### Android(Kotlin), MVVM, Room, AAC ViewModel, DataBinding, BindingAdapter, LiveData, SharedFlow, Koin, Coroutine, Retrofit2, Glide, Riot API, Recyclerview, NestedScrollView 등
+#### Clean Architecture, Android(Kotlin), MVVM, Room, AAC ViewModel, DataBinding, BindingAdapter, LiveData, SharedFlow, Koin, Coroutine, Retrofit2, Glide, Riot API, Recyclerview, NestedScrollView 등
