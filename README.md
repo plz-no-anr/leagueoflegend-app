@@ -1,5 +1,7 @@
 ## 리그오브레전드 전적검색 및 실시간 게임정보(룬,스펠)확인 앱📱 
 
+> 클린 아키텍처 + Koin으로 의존성 주입
+
 ### 1. 메인화면 및 AppBar
 ![image](https://user-images.githubusercontent.com/71485469/148884101-f932cc96-80a3-4a90-8e4b-a9a02f36d119.png)
 ![image](https://user-images.githubusercontent.com/71485469/148884171-678de92d-ba8c-48b6-ad4d-7f923c5ce4e1.png)
