@@ -8,11 +8,14 @@ import com.psg.domain.model.Search
 import com.psg.domain.usecase.*
 import com.psg.leagueoflegend_app.base.BaseViewModel
 import com.psg.leagueoflegend_app.utils.AppLogger
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
+import javax.inject.Inject
 
-class SearchViewModel(
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val keyUseCase: GetKeyUseCase,
     private val searchUseCase: GetSearchUseCase,
     private val searchLeagueUseCase: SearchLeagueUseCase,

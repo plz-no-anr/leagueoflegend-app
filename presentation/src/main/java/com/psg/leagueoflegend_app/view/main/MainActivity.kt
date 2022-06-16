@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.activity.viewModels
 import androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
@@ -23,6 +24,7 @@ import com.psg.leagueoflegend_app.base.BaseViewModel
 import com.psg.leagueoflegend_app.utils.NetworkUtils
 import com.psg.leagueoflegend_app.view.search.SearchActivity
 import com.psg.leagueoflegend_app.view.spectator.SpectatorActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_settingkey.*
 import kotlinx.android.synthetic.main.header_navi.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -31,10 +33,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main),
     NavigationView.OnNavigationItemSelectedListener {
     override val TAG: String = MainActivity::class.java.simpleName
-    override val viewModel: MainViewModel by inject()
+    override val viewModel: MainViewModel by viewModels()
     private val adapter = MainAdapter()
 
     //    private var refreshLock = false
@@ -50,7 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         setRv()
         setObserve()
 //        setNetworkObserve()
-//        setEventFlow()
+        setEventFlow()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

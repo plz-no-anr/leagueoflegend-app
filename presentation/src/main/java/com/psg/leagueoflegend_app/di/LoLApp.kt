@@ -4,11 +4,13 @@ import android.app.Application
 import android.content.Context
 import com.google.gson.Gson
 import com.psg.leagueoflegend_app.module.*
+import dagger.hilt.android.HiltAndroidApp
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
+@HiltAndroidApp
 class LoLApp: Application() {
 
     companion object{
@@ -24,19 +26,19 @@ class LoLApp: Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
-        startKoin {
-            androidLogger(Level.NONE)
-            androidContext(this@LoLApp)
-            modules(
-                apiModule,
-                localDataModule,
-                remoteDataModule,
-                repositoryModule,
-                useCaseModule,
-                viewModelModule,
-                jsonModule
-            )
-        }
+//        startKoin {
+//            androidLogger(Level.NONE)
+//            androidContext(this@LoLApp)
+//            modules(
+//                apiModule,
+//                localDataModule,
+//                remoteDataModule,
+//                repositoryModule,
+//                useCaseModule,
+//                viewModelModule,
+//                jsonModule
+//            )
+//        }
     }
 
 

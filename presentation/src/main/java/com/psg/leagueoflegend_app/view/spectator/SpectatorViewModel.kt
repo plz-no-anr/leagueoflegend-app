@@ -10,10 +10,13 @@ import com.psg.domain.usecase.GetSpectatorInfoBUseCase
 import com.psg.domain.usecase.GetSpectatorInfoRUseCase
 import com.psg.domain.usecase.GetSpectatorUseCase
 import com.psg.leagueoflegend_app.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SpectatorViewModel(
+@HiltViewModel
+class SpectatorViewModel @Inject constructor(
     private val keyUseCase: GetKeyUseCase,
     private val spectatorUseCase: GetSpectatorUseCase,
     private val spectatorInfoRUseCase: GetSpectatorInfoRUseCase,

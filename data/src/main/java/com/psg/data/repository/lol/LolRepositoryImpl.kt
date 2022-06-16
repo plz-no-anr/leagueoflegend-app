@@ -14,8 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LolRepositoryImpl(
+class LolRepositoryImpl @Inject constructor(
     private val lolRemoteDataSource: LolRemoteDataSource,
     private val lolLocalDataSource: LolLocalDataSource,
     private val keyLocalDataSource: KeyLocalDataSource,

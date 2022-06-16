@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -18,15 +19,17 @@ import com.psg.leagueoflegend_app.databinding.ActivitySpectatorBinding
 import com.psg.leagueoflegend_app.di.LoLApp
 import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.view.main.getProgressDrawable
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_rune.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+@AndroidEntryPoint
 class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewModel>(R.layout.activity_spectator) {
     override val TAG: String = SpectatorActivity::class.java.simpleName
-    override val viewModel: SpectatorViewModel by inject()
+    override val viewModel: SpectatorViewModel by viewModels()
     private val adapterB = SpectatorAdapter()
     private val adapterR = SpectatorAdapter()
     lateinit var dialog: Dialog

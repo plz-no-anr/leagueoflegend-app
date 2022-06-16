@@ -15,10 +15,13 @@ import com.psg.domain.usecase.*
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.base.BaseViewModel
 import com.psg.leagueoflegend_app.utils.NetworkUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val keyUseCase: GetKeyUseCase,
     private val insertKeyUseCase: InsertKeyUseCase,
     private val summonerUseCase: GetSummonerUseCase,

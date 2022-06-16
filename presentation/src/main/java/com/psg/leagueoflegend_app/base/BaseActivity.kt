@@ -29,7 +29,7 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
 //        Log.i(TAG,"onCreate")
         binding = DataBindingUtil.setContentView(this, res)
         binding.lifecycleOwner = this
-        setEventFlow()
+//        setEventFlow()
     }
 
     open fun setObserve() {

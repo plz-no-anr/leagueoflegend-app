@@ -3,8 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/main_item.xml" value="0.1" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/drawable/border.xml" value="0.2915" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/drawable/ic_baseline_horizontal_rule_24.xml" value="0.2915" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/activity_search.xml" value="0.17777777777777778" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/activity_spectator.xml" value="0.1875" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/activity_splash.xml" value="0.1875" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/dialog_loading.xml" value="0.1875" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/dialog_rune.xml" value="0.2546875" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/dialog_settingkey.xml" value="0.2546875" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/header_navi.xml" value="0.13072916666666667" />
+        <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/main_item.xml" value="0.25" />
         <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/search_item.xml" value="0.1" />
         <entry key="..\:/ParksProject/LeagueOfLegend-App/presentation/src/main/res/layout/spectator_item.xml" value="0.20199275362318841" />
       </map>

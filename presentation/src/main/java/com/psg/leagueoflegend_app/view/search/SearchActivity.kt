@@ -11,15 +11,18 @@ import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.base.BaseActivity
 import com.psg.leagueoflegend_app.base.BaseViewModel
 import com.psg.leagueoflegend_app.view.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@AndroidEntryPoint
 class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(R.layout.activity_search) {
     override val TAG: String = MainActivity::class.java.simpleName
-    override val viewModel: SearchViewModel by inject()
+    override val viewModel: SearchViewModel by viewModel()
     private val adapter = SearchAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +31,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(R.la
         setObserve()
         initView()
         setRv()
-//        setEventFlow()
+        setEventFlow()
 
     }
 
