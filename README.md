@@ -17,4 +17,4 @@
 ---
 
 ## 사용기술
-#### Clean Architecture, Android(Kotlin), Dagger-Hilt MVVM, Room, AAC ViewModel, DataBinding, BindingAdapter, LiveData, SharedFlow, Coroutine, Retrofit2, Glide, Riot API, Recyclerview, NestedScrollView 등
+#### Android(Kotlin), Clean Architecture, MVVM, Dagger-Hilt, Room, ViewModel, DataBinding, BindingAdapter, LiveData, SharedFlow, Coroutine, Retrofit2, Glide, Riot API, Recyclerview, NestedScrollView 등
