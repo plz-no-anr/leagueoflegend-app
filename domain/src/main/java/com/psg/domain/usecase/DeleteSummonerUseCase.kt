@@ -4,7 +4,7 @@ import com.psg.domain.model.Summoner
 import com.psg.domain.repository.LolRepository
 
 class DeleteSummonerUseCase(private val repository: LolRepository) {
-    suspend fun execute(summoner: Summoner){
+    suspend operator fun invoke(summoner: Summoner){
         repository.deleteSummoner(summoner)
     }
 }

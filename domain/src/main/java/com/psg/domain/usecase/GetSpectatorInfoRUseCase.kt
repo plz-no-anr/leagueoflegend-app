@@ -5,5 +5,5 @@ import com.psg.domain.repository.LolRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetSpectatorInfoRUseCase(private val repository: LolRepository) {
-    suspend fun execute(name: String): Flow<List<SpectatorInfo>> = repository.getSpectatorInfoR(name)
+    suspend operator fun invoke(name: String): Flow<List<SpectatorInfo>> = repository.getSpectatorInfoR(name)
 }

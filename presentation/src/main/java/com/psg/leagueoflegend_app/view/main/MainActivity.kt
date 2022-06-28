@@ -344,8 +344,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
 
-
-
 //    private fun setNetworkObserve(){
 //        val status = NetworkStatus(applicationContext)
 //        status.observe(this, Observer {

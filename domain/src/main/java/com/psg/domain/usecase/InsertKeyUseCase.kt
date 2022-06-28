@@ -3,7 +3,7 @@ package com.psg.domain.usecase
 import com.psg.domain.repository.KeyRepository
 
 class InsertKeyUseCase(private val repository: KeyRepository) {
-    fun execute(value: String) {
+    operator fun invoke(value: String) {
         repository.apiKey = value
     }
 }

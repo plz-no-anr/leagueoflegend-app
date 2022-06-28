@@ -4,7 +4,7 @@ import com.psg.domain.model.Search
 import com.psg.domain.repository.LolRepository
 
 class DeleteSearchUseCase(private val repository: LolRepository) {
-    suspend fun execute(search: Search) {
+    suspend operator fun invoke(search: Search) {
         repository.deleteSearch(search)
     }
 }

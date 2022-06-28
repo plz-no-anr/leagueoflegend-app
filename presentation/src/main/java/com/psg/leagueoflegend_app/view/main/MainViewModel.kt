@@ -33,9 +33,6 @@ class MainViewModel @Inject constructor(
     private val refreshDataUseCase: RefreshDataUseCase
 ) : BaseViewModel() {
 
-//    private val _eventFlow = MutableSharedFlow<Event>()
-//    override val eventFlow: SharedFlow<BaseViewModel.Event> = _eventFlow.asSharedFlow()
-
     val summonerList: LiveData<List<Summoner>> get() = _summonerList
     private val _summonerList = MutableLiveData<List<Summoner>>()
 
@@ -56,7 +53,7 @@ class MainViewModel @Inject constructor(
 
     override fun initViewModel() {
         viewModelScope.launch {
-            _apiKey.value = keyUseCase.execute()
+            _apiKey.value = keyUseCase()
             _isRefresh.value = false
             summonerUpdate()
             profileUpdate()
@@ -67,7 +64,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             var summonerList = listOf<Summoner>()
             withContext(Dispatchers.IO){
-                summonerUseCase.execute().collect {
+                summonerUseCase().collect {
                     summonerList = it
                 }
 
@@ -80,7 +77,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             var profile = Profile("","","")
             withContext(Dispatchers.IO){
-                profileUseCase.execute().collect {
+                profileUseCase().collect {
                     profile = it
                 }
 
@@ -89,35 +86,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
-//    override fun toastEvent(text: String){
-//        event(SearchViewModel.Event.ShowToast(text))
-//    }
-//
-//    private fun event(event: SearchViewModel.Event) {
-//        CoroutineScope(Dispatchers.IO).launch{
-//            _eventFlow.emit(event)
-//        }
-//    }
 
-    fun insertKey(value: String) = insertKeyUseCase.execute(value)
+
+    fun insertKey(value: String) = insertKeyUseCase(value)
 
 
     fun insertProfile(profile: Profile){
         CoroutineScope(Dispatchers.IO).launch {
-            deleteProfileUseCase.execute()
-            insertProfileUseCase.execute(profile)
+            deleteProfileUseCase()
+            insertProfileUseCase(profile)
         }
     }
 
-//    fun updateProfile(profile: Profile){
-//        CoroutineScope(Dispatchers.IO).launch {
-//            repository.updateProfile(profile)
-//        }
-//    }
-
     fun deleteProfile(){
         CoroutineScope(Dispatchers.IO).launch {
-            deleteProfileUseCase.execute()
+            deleteProfileUseCase()
         }
     }
 
@@ -141,132 +124,17 @@ class MainViewModel @Inject constructor(
         }
         refreshCount++
         viewModelScope.launch {
-            refreshDataUseCase.execute(list).collect {
+            refreshDataUseCase(list).collect {
                 _league.value = it
             }
             refreshCountReset()
         }
 
-//        if (list.isNotEmpty()) {
-//            for (summoner in list)
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    try {
-//                        apiKey.value?.let {
-//                            val body = repository.searchSummoner(summoner.name, it).body()
-//                            val code = repository.searchSummoner(summoner.name, it).code()
-//                            AppLogger.p("id는?${body?.id}")
-//                            if (code == 200 && body != null) {
-//                                val resLeague = repository.searchLeague(body.id, it)
-//                                val resSpectator = repository.searchSpectator(body.id, it).body()
-//                                val playing = resSpectator?.gameId != null
-//                                AppLogger.p("게임중?$playing")
-//                                val iterator = resLeague.body()?.iterator() ?: iterator { }
-//                                while (iterator.hasNext()) {
-//                                    val league = iterator.next()
-//                                    if (league.queueType == "RANKED_SOLO_5x5") {
-//                                        AppLogger.p("소환사이름:${league.summonerName},티어:${league.tier},리그포인트${league.leaguePoints},랭크:${league.rank},전적:${league.wins}승,${league.losses}패")
-//                                        if (league.miniSeries != null) {
-//                                            val mini = SummonerEntity.MiniSeries(
-//                                                league.miniSeries.losses!!,
-//                                                league.miniSeries.target!!,
-//                                                league.miniSeries.wins!!,
-//                                                league.miniSeries.progress!!
-//                                            )
-//                                            val icon =
-//                                                "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
-//
-//                                            repository.updateSummoner(
-//                                                SummonerEntity(
-//                                                    league.summonerName!!,
-//                                                    body.summonerLevel.toString(),
-//                                                    icon,
-//                                                    league.tier!!,
-//                                                    league.leaguePoints!!,
-//                                                    league.rank!!,
-//                                                    league.wins!!,
-//                                                    league.losses!!,
-//                                                    mini,
-//                                                    playing
-//                                                )
-//                                            )
-//                                            AppLogger.p("승급전중")
-//                                            AppLogger.p(
-//                                                "승급전:${
-//                                                    league.miniSeries.progress.replace("L", "패")
-//                                                        .replace("W", "승")
-//                                                }"
-//                                            )
-//
-//                                        } else {
-//                                            val mini = SummonerEntity.MiniSeries(0, 0, 0, "No")
-//                                            val icon =
-//                                                "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${body.profileIconId}.png"
-//                                            repository.updateSummoner(
-//                                                SummonerEntity(
-//                                                    league.summonerName!!,
-//                                                    body.summonerLevel.toString(),
-//                                                    icon,
-//                                                    league.tier!!,
-//                                                    league.leaguePoints!!,
-//                                                    league.rank!!,
-//                                                    league.wins!!,
-//                                                    league.losses!!,
-//                                                    mini,
-//                                                    playing
-//                                                )
-//                                            )
-//                                            AppLogger.p("승급전아님")
-//                                        }
-////                                        toastEvent("업데이트 성공")
-//
-//                                    }
-//                                    return@launch
-//                                }
-//
-//                            } else {
-//                                when (code) {
-//                                    401 -> {
-//                                        toastEvent("토큰이 인증되지 않았습니다.")
-//                                        return@launch
-//                                    }
-//                                    403 -> {
-//                                        toastEvent("토큰이 만료되었습니다.")
-//                                        return@launch
-//                                    }
-//                                    404 -> {
-//                                        toastEvent("존재하지 않는 아이디입니다.")
-//                                        return@launch
-//                                    }
-//                                    429 -> {
-//                                        AppLogger.p("너무 많은 요청")
-//                                        return@launch
-//                                    }
-//                                }
-//                                AppLogger.p(
-//                                    "리스폰스에러바디:${
-//                                        repository.searchSummoner(summoner.name, it).errorBody()
-//                                            ?.string()
-//                                    }"
-//                                )
-//                                AppLogger.p(
-//                                    "코드:${
-//                                        repository.searchSummoner(summoner.name, it).code()
-//                                    }"
-//                                )
-//                                AppLogger.p("에러")
-//                            }
-//                            }
-//                    }catch (e: Exception){
-//                        e.printStackTrace()
-//                    }
-//
-//                }
-//        }
     }
 
     fun deleteSummoner(summoner: Summoner){
         CoroutineScope(Dispatchers.IO).launch {
-            deleteSummonerUseCase.execute(summoner)
+            deleteSummonerUseCase(summoner)
         }
         summonerUpdate()
         summonerUpdate()
@@ -274,23 +142,17 @@ class MainViewModel @Inject constructor(
 
     fun deleteAll(){
         CoroutineScope(Dispatchers.IO).launch {
-            deleteSummonerAllUseCase.execute()
+            deleteSummonerAllUseCase()
         }
         summonerUpdate()
     }
 
 
-//    fun getApikey() = repository.getApikey()
 
     fun setApikey(value:String){
         _apiKey.value = value
-        insertKeyUseCase.execute(value)
+        insertKeyUseCase(value)
     }
-
-//    fun delApikey() {
-//        repository.delApikey()
-//    }
-
 
 
     fun bindImage(view: ImageView, uri: String?) { //imageView에 값을 넣기위한 Adapter Layout단에서 넣어주는 값이 uri로 들어옴
@@ -313,16 +175,6 @@ class MainViewModel @Inject constructor(
             start()
         }
     }
-
-
-
-
-
-
-
-//    sealed class Event {
-//        data class ShowToast(val text: String) : Event()
-//    }
 
 
 }

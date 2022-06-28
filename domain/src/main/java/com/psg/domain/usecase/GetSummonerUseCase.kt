@@ -5,5 +5,5 @@ import com.psg.domain.repository.LolRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetSummonerUseCase(private val repository: LolRepository) {
-    suspend fun execute(): Flow<List<Summoner>> = repository.getSummoner()
+    suspend operator fun invoke(): Flow<List<Summoner>> = repository.getSummoner()
 }

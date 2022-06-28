@@ -4,7 +4,7 @@ import com.psg.domain.model.Profile
 import com.psg.domain.repository.LolRepository
 
 class DeleteProfileUseCase (private val repository: LolRepository) {
-    suspend fun execute(){
+    suspend operator fun invoke(){
         repository.deleteProfile()
     }
 }

@@ -6,5 +6,5 @@ import com.psg.domain.repository.LolRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetSpectatorUseCase(private val repository: LolRepository) {
-    suspend fun execute(name: String): Flow<Spectator> = repository.getSpectator(name)
+    suspend operator fun invoke(name: String): Flow<Spectator> = repository.getSpectator(name)
 }

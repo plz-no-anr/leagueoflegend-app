@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 class RefreshDataUseCase(
     private val repository: LolRepository
 ) {
-    fun execute(list: List<Summoner>): Flow<League> = repository.refreshData(list)
+    operator fun invoke(list: List<Summoner>): Flow<League> = repository.refreshData(list)
 }

@@ -4,7 +4,7 @@ import com.psg.domain.model.Profile
 import com.psg.domain.repository.LolRepository
 
 class InsertProfileUseCase(private val repository: LolRepository) {
-    suspend fun execute(profile: Profile){
+    suspend operator fun invoke(profile: Profile){
         repository.insertProfile(profile)
     }
 }
