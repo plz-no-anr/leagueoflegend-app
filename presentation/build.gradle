@@ -66,9 +66,6 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:2.2.6"
 
-    // koin
-    implementation "io.insert-koin:koin-android:$koin_version"
-
     //recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
