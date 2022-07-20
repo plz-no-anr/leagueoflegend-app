@@ -1,7 +1,6 @@
 package com.psg.leagueoflegend_app.utils
 
 import android.util.Log
-import org.koin.android.BuildConfig
 
 class AppLogger {
     companion object{
