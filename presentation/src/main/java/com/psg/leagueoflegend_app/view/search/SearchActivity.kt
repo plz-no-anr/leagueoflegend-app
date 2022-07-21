@@ -2,27 +2,20 @@ package com.psg.leagueoflegend_app.view.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.psg.leagueoflegend_app.R
-import com.psg.data.model.local.SearchEntity
 import com.psg.domain.model.Search
 import com.psg.leagueoflegend_app.databinding.ActivitySearchBinding
 import com.psg.leagueoflegend_app.utils.AppLogger
 import com.psg.leagueoflegend_app.base.BaseActivity
-import com.psg.leagueoflegend_app.base.BaseViewModel
 import com.psg.leagueoflegend_app.view.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @AndroidEntryPoint
 class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(R.layout.activity_search) {
     override val TAG: String = MainActivity::class.java.simpleName
-    override val viewModel: SearchViewModel by viewModel()
+    override val viewModel: SearchViewModel by viewModels()
     private val adapter = SearchAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,19 +27,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(R.la
         setEventFlow()
 
     }
-
-//    override fun setEventFlow(){
-//        CoroutineScope(Dispatchers.IO).launch{
-//            viewModel.eventFlow.collect { event -> handleEvent(event) }
-//        }
-//    }
-//
-//     override fun handleEvent(event: BaseViewModel.Event) = when (event){
-//        is BaseViewModel.Event.ShowToast ->
-//            CoroutineScope(Dispatchers.Main).launch {
-//                makeToast(event.text)
-//            }
-//    }
 
     override fun setObserve(){
         viewModel.league.observe(this) {

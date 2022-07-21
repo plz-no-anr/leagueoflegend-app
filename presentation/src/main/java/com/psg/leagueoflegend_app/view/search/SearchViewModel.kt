@@ -44,11 +44,9 @@ class SearchViewModel @Inject constructor(
      fun searchUpdate(){
         viewModelScope.launch {
             var searchList = listOf<Search>()
-            withContext(Dispatchers.IO){
                 searchUseCase().collect {
                     searchList = it
                 }
-            }
             _searchList.value = searchList
         }
     }
@@ -60,11 +58,9 @@ class SearchViewModel @Inject constructor(
                 apiKey.value?.let {
                     viewModelScope.launch {
                         var league: League? = null
-                        withContext(Dispatchers.IO){
                             searchLeagueUseCase(name, it, date).collect {
                                 league = it
                             }
-                        }
                          _league.value = league!!
                     }
                 }
