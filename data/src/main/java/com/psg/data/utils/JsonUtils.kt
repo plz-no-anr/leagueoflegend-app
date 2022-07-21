@@ -51,9 +51,7 @@ class JsonUtils(val context: Context) {
         val champString = context.assets.open("champion.json").reader().readText()
         val champArr = JSONArray(champString)
         for (i in 0 until champArr.length()) {
-//            AppLogger.p("챔프:${champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString()).getString("name")}")
-            champName =
-                champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString())
+            champName = champArr.getJSONObject(i).getJSONObject("data").getJSONObject(champId.toString())
                     .getString("name")
         }
         return champName

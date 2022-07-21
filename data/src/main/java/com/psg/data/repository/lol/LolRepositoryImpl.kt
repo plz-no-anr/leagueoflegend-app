@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +26,7 @@ class LolRepositoryImpl @Inject constructor(
     override suspend fun getSummoner(): Flow<List<Summoner>> = flow {
         val summoner = lolLocalDataSource.getSummoner()
         emit(entityToSummoner(summoner))
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun deleteSummoner(summoner: Summoner) = lolLocalDataSource.deleteSummoner(
         summonerToEntity(summoner)
@@ -36,7 +37,7 @@ class LolRepositoryImpl @Inject constructor(
     override suspend fun getProfile(): Flow<Profile> = flow {
         val profile = lolLocalDataSource.getProfile()
         emit(entityToProfile(profile))
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun insertProfile(profile: Profile) = lolLocalDataSource.insertProfile(
         profileToEntity(profile)
@@ -47,7 +48,7 @@ class LolRepositoryImpl @Inject constructor(
     override suspend fun getSearch(): Flow<List<Search>> = flow {
         val search = lolLocalDataSource.getSearch()
         emit(entityToSearch(search))
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun deleteSearch(search: Search) = lolLocalDataSource.deleteSearch(
         searchToEntity(search)
@@ -95,7 +96,7 @@ class LolRepositoryImpl @Inject constructor(
             e.printStackTrace()
         }
         emit(spectator)
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getSpectatorInfoR(name: String): Flow<List<SpectatorInfo>> = flow {
         val list = mutableListOf<SpectatorInfo>()
@@ -150,7 +151,7 @@ class LolRepositoryImpl @Inject constructor(
             e.printStackTrace()
         }
         emit(list)
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getSpectatorInfoB(name: String): Flow<List<SpectatorInfo>> = flow {
         val list = mutableListOf<SpectatorInfo>()
@@ -203,7 +204,7 @@ class LolRepositoryImpl @Inject constructor(
             e.printStackTrace()
         }
         emit(list)
-    }
+    }.flowOn(Dispatchers.IO)
 
     override fun searchLeague(name: String, key: String, date: String): Flow<League> = flow {
         try {
@@ -347,7 +348,7 @@ class LolRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     override fun refreshData(list: List<Summoner>): Flow<League> = flow {
         if (list.isNotEmpty()) {
@@ -491,5 +492,5 @@ class LolRepositoryImpl @Inject constructor(
                 }
         }
 
-    }
+    }.flowOn(Dispatchers.IO)
 }
