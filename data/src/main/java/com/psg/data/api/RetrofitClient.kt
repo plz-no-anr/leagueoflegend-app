@@ -11,8 +11,6 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
     }
 
-
-
     val summonerService: LeagueOfLegendAPI by lazy {
         client.build().create(LeagueOfLegendAPI::class.java)
     }

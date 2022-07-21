@@ -6,32 +6,26 @@ import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.MenuItem
+import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
-import com.psg.data.model.local.ProfileEntity
-import com.psg.data.model.local.SummonerEntity
 import com.psg.domain.model.Profile
 import com.psg.domain.model.Summoner
-import com.psg.leagueoflegend_app.di.LoLApp
 import com.psg.leagueoflegend_app.R
+import com.psg.leagueoflegend_app.base.BaseActivity
 import com.psg.leagueoflegend_app.databinding.ActivityMainBinding
 import com.psg.leagueoflegend_app.utils.AppLogger
-import com.psg.leagueoflegend_app.base.BaseActivity
-import com.psg.leagueoflegend_app.base.BaseViewModel
 import com.psg.leagueoflegend_app.utils.NetworkUtils
 import com.psg.leagueoflegend_app.view.search.SearchActivity
 import com.psg.leagueoflegend_app.view.spectator.SpectatorActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_settingkey.*
 import kotlinx.android.synthetic.main.header_navi.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main),
@@ -40,7 +34,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     override val viewModel: MainViewModel by viewModels()
     private val adapter = MainAdapter()
 
-    //    private var refreshLock = false
     private var list: List<Summoner> = listOf()
     private var profile: Profile = Profile("", "", "")
 
@@ -52,7 +45,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         initView()
         setRv()
         setObserve()
-//        setNetworkObserve()
         setEventFlow()
     }
 
@@ -93,20 +85,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             super.onBackPressed()
         }
     }
-
-
-//    override fun setEventFlow(){
-//        CoroutineScope(Dispatchers.IO).launch{
-//            viewModel.eventFlow.collect { event -> handleEvent(event) }
-//        }
-//    }
-//
-//    private fun handleEvent(event: BaseViewModel.Event) = when (event){
-//        is BaseViewModel.Event.ShowToast ->
-//            CoroutineScope(Dispatchers.Main).launch {
-//                makeToast(event.text)
-//            }
-//    }
 
     override fun onStart() {
         super.onStart()
@@ -168,18 +146,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         }
     }
 
-//    private fun setLock(): CountDownTimer =
-//          object : CountDownTimer(0,30000){
-//            override fun onTick(millisUntilFinished: Long) {
-//                AppLogger.p("타이머 동작중")
-//                refreshLock = true
-//            }
-//
-//            override fun onFinish() {
-//                refreshLock = false
-//            }
-//
-//        }
 
     private fun checkNetwork() {
         NetworkUtils.getNetworkStatus().observe(this) { isConnected ->
@@ -332,7 +298,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         val builder = AlertDialog.Builder(this)
         builder.setTitle("키 삭제").setMessage("정말로 삭제하시겠습니까?")
         builder.setPositiveButton("삭제") { dialog, _ ->
-//            viewModel.delApikey()
             dialog.dismiss()
         }
         builder.setNegativeButton("취소") { dialog, _ ->
@@ -342,18 +307,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         val alertDialog = builder.create()
         alertDialog.show()
     }
-
-
-//    private fun setNetworkObserve(){
-//        val status = NetworkStatus(applicationContext)
-//        status.observe(this, Observer {
-//            if (it){
-//
-//            } else {
-//
-//            }
-//        })
-//    }
 
 
 }

@@ -14,7 +14,6 @@ import com.psg.domain.model.Summoner
 import com.psg.domain.usecase.*
 import com.psg.leagueoflegend_app.R
 import com.psg.leagueoflegend_app.base.BaseViewModel
-import com.psg.leagueoflegend_app.utils.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
@@ -63,12 +62,10 @@ class MainViewModel @Inject constructor(
     fun summonerUpdate(){
         viewModelScope.launch {
             var summonerList = listOf<Summoner>()
-            withContext(Dispatchers.IO){
                 summonerUseCase().collect {
                     summonerList = it
                 }
 
-            }
             _summonerList.value = summonerList
         }
     }
@@ -76,12 +73,9 @@ class MainViewModel @Inject constructor(
     fun profileUpdate(){
         viewModelScope.launch {
             var profile = Profile("","","")
-            withContext(Dispatchers.IO){
                 profileUseCase().collect {
                     profile = it
                 }
-
-            }
             _profile.value = profile
         }
     }

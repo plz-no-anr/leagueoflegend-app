@@ -71,20 +71,6 @@ class MainAdapter(var list: List<Summoner> = mutableListOf()) :
                     itemView.ll_mini.visibility = View.INVISIBLE
                 }
 
-//                loadImage(itemView.iv_icon,item.icon)
-//                itemView.tv_level.text = getLevels(item)
-//                itemView.tv_id.text = item.name
-//                tierIcon(itemView.iv_tierImg, tierIcon(item))
-//                itemView.tv_tier_rank.text = getTierRank(item)
-//                itemView.tv_leaguePoint.text = getLeaguePoint(item)
-//                miniImage(itemView.iv_mini1,miniImage1(item))
-//                miniImage(itemView.iv_mini2,miniImage2(item))
-//                miniImage(itemView.iv_mini3,miniImage3(item))
-//                miniImage(itemView.iv_mini4,miniImage4(item))
-//                miniImage(itemView.iv_mini5,miniImage5(item))
-//
-//                isPlaying(itemView.iv_playing, playing(item))
-
             }
         }
 
