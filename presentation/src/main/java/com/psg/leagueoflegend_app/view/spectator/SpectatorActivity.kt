@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.dialog_rune.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 @AndroidEntryPoint
 class SpectatorActivity : BaseActivity<ActivitySpectatorBinding, SpectatorViewModel>(R.layout.activity_spectator) {

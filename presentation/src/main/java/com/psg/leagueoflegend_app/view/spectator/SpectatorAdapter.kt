@@ -49,7 +49,6 @@ class SpectatorAdapter(var list: List<SpectatorInfo> = mutableListOf()):
     }
 
 
-
     inner class SpectatorHolder(private val binding: SpectatorItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SpectatorInfo){
